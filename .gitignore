@@ -1,0 +1,11 @@
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# App-owned runtime state — should not be committed for shared examples
+examples/*/data/
+examples/*/logs/
+templates/*/data/
+templates/*/logs/
