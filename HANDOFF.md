@@ -32,3 +32,25 @@
 - Push the app.md repo every tick. Skip atrisos-backend pushes silently — Keshav will resolve the orphan-test hook in the morning.
 
 **Signal:** seeded — first real tick fires from cron `/forgepilot`.
+
+---
+
+## Tick 1 — 2026-04-29 (app-T1: define `description`)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T1 — Add `description` field to SPEC.md as a defined optional string field.
+
+**Metric:** SPEC.md `description` references = 0 → 1 (typed-field row in new `## Optional metadata` section between Required fields and Runtime enum). 10/10 manifests now have a defined home for their existing top-level `description:` line.
+
+**BS check:** ran. Verified all 10 manifests use single-line top-level `description:` (frontmatter, not body, not nested) before editing — codex's flagged falsifier was clean. After edit, grep -c "description" SPEC.md = 1, content matches typed row.
+
+**Codex plan review:** APPROVED. "Real but incomplete: grep proves the doc delta; placement in the normative field table proves the spec delta… T1 is tiny, high-confidence, and unblocks all fixtures from one fail-closed error." Falsifier flagged: confirm description is top-level frontmatter, not nested. Verified clean before edit.
+
+**Codex output review:** APPROVED with one wording nit. "Metric: real but weak; acceptable tick signal, not proof of conformance. Placement is correct. Tighten 'Free-form' → 'Plain text' if schema will enforce scalar string only." Applied: "Free-form" → "Plain-text". No max length added (schema churn).
+
+**Gap closed:** Validation rule #4 (fail-closed on unknown fields) no longer flags the universal `description:` usage in 10/10 manifests. Removes one of 8 codex punch-list issues. JSON Schema work in app-T9 now has a typed-field row to mirror as source of intent.
+
+**Next:** app-T2 — Define execution binding for `local` and `template` runtimes. SPEC.md has bindings for subprocess/ec2/webhook/external/web/ios but `local` (commit-digest example) and `template` (3 templates) are silent. Local likely wants `entrypoint:` (shell command) or `script:` (relative path). Template should be explicit "no execution binding required, fork-only".
+
+**Signal:** [TICK_COMPLETE] metric=spec_field_description_defined=1

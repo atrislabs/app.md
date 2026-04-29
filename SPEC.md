@@ -23,6 +23,12 @@ Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails 
 | `runtime` | enum | One of the 8 runtimes (see below) |
 | `vault` | enum | `atris-kms` \| `app_secrets` \| `byo-aws` \| `local` |
 
+## Optional metadata
+
+| Field | Type | Notes |
+|---|---|---|
+| `description` | string | Plain-text one-line summary of what the app does. Surfaced in registries, marketplaces, CLI listings, and search. Single-line; for longer copy use the markdown body. |
+
 ## Runtime enum
 
 | Value | Where the code runs |
