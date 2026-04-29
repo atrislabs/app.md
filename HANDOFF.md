@@ -26,4 +26,9 @@
 - Codex plan-review BEFORE building, output-review AFTER. Both `codex exec` runs from `~/arena/app.md/`.
 - BS check: every spec edit must be backed by either (a) an example that exercises it, or (b) a fixture in `fixtures/valid/` or `fixtures/invalid/`. No spec text without a witness.
 
+**Cross-repo note (2026-04-29):** atrisos-backend pre-push hook is currently blocking pushes from this machine due to an orphaned test (`backend/tests/test_vitalize_brain_benchmark.py` references a missing `scripts/vitalize_brain_benchmark.py`). Local commits to `atris/TODO.md` and daily logs there will accumulate but not push tonight. The `~/arena/app.md/` repo has no such hook — its pushes succeed. Forgepilot ticks should:
+- Read `atris/TODO.md` locally (no fetch needed).
+- Write per-tick handoff blocks to THIS file (`~/arena/app.md/HANDOFF.md`), not to `atris/team/.../forgepilot.md`. This keeps the endgame self-contained and visible via the public app.md repo.
+- Push the app.md repo every tick. Skip atrisos-backend pushes silently — Keshav will resolve the orphan-test hook in the morning.
+
 **Signal:** seeded — first real tick fires from cron `/forgepilot`.
