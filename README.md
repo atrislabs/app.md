@@ -79,10 +79,11 @@ python -m scripts.apps_cli run my-standup         # subprocess execution
 
 ## Examples
 
-Six real apps that ship in production, illustrating most of the schema surface:
+Seven real apps that ship in production, illustrating most of the schema surface:
 
 | App | Runtime | Demonstrates |
 |---|---|---|
+| [`commit-digest`](./examples/commit-digest/APP.md) | `local` | Runs entirely on the customer's machine, no secrets, no network |
 | [`atris-revenue`](./examples/atris-revenue/APP.md) | `ec2` | Stripe → Slack daily digest, secret declaration |
 | [`burn-rate`](./examples/burn-rate/APP.md) | `ec2` | Multi-vendor finance pull (Ramp + Mercury + Brex + Stripe) |
 | [`daily-standup`](./examples/daily-standup/APP.md) | `subprocess` | Cron schedule, multi-surface rendering (`[slack, voice, email]`) |
