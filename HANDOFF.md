@@ -421,3 +421,40 @@ The "swap test" anti-slop check (codex's idea, applied here for the first time) 
 If next tick fires before Keshav reviews, default to (b). Don't re-promote CrewAI; one send-ready-pending-approval at a time per target.
 
 **Signal:** [TICK_COMPLETE] metric=gates_cleared=4/4,send_ready_count=1/10,draft_word_count=86,codex_swap_test=PASS
+
+---
+
+### Tick 15 — 2026-04-30T04:07Z
+
+**Horizon:** APP.md v1 spec endgame — adding redundancy to OUTREACH so app-T14 (send 1 outbound notification) has a 2nd send-ready candidate beyond CrewAI.
+
+**Task:** Promote Modal from `Research depth: partial` to `send-ready-pending-approval` by clearing all 4 gates (G1 schema, G2 channel, G3 anchor, G4 ≤100-word draft) — explicitly without force-fitting CrewAI's manifest metaphor onto a code-first platform.
+
+**Metric:** gates_cleared=4/4 with codex output review APPROVE_WITH_NOTES, send_ready_count=2/10 (was 1/10 after tick 14), draft_word_count=90 (cap 100), swap_test=PASS on E2B/Daytona/Lambda, plan_review_iterations=1 (corrections), output_review_iterations=2 (REJECT then APPROVE_WITH_NOTES).
+
+**BS check:**
+- G1 verified: docs.modal.com/reference/modal.App quoted verbatim ("A Modal App is a group of functions and classes that are deployed together" + "@app.function() decorator... registers... schedules and secrets, with the app"). Modal explicitly chose code-as-config; entry frames APP.md as "non-overlapping markdown sibling," NOT as YAML-replacement. Honest weakness disclosed: this is hypothesis, not Modal-team-endorsed.
+- G2 verified: modal.com/slack confirmed via WebSearch as official public surface (alias for modallabscommunity.slack.com). Founder Erik Bernhardsson downgraded to routing clue.
+- G3 verified: "Building with Modal and the OpenAI Agents SDK" blog (modal.com/blog/building-with-modal-and-the-openai-agent-sdk), 2026-04-15, 15 days old as of tick — 1 day past ~14-day soft cap. Honestly disclosed as borderline. Status page incidents (Apr 26-29) NOT used as anchor — bad form to cold-pitch on someone's outage.
+- G4 verified: 90 words, anchored on the Agents SDK + Sandboxes story, uses Modal-specific concrete handles (`modal.Image`, `modal.Secret`, `modal.Cron`, `@app.function`, `App.lookup(slug).fn.spawn(...)`, "Lovable/Ramp-style customers shipping agent products on Sandboxes"). Codex swap test PASSES — find-and-replace to E2B/Daytona/Lambda breaks because the dispatch sketch (`App.lookup`) and Modal's primitive set don't have direct equivalents. Frame is humble: "testing whether APP.md fits" + "Curious if this boundary holds" — passes anti-slop.
+- Rollback rule: 4 sharpened triggers per codex feedback (already-has-manifest / config-shadowing / broken-dispatch-sketch / scope-creep-rejection). Each is falsifiable.
+- Anti-pitch: OSSA acknowledged. No "first/only" claims. APP.md differentiation = markdown-native frontmatter + 65-line reference parser + audit-driven scope.
+- Final gate (G5, manual): Keshav reviews + edits + approves before any send. Per safety policy, no irreversible action without explicit confirm.
+
+**Codex plan review:** "Approve with corrections" — drop `modal.toml` premise (it's client config, not app manifest); G1 must anchor on `modal.App` + `@app.function()` + Modal's intentional code-first stance; G2 must be Modal Slack not GitHub Discussions; G3 (Agents SDK post, April 15) is "1 day past soft cap" → mark borderline not hide; add rollback line; frame APP.md as "envelope above" not "replacement." All 6 corrections applied.
+
+**Codex output review:**
+- v1 (initial): REJECT. Failed on swap test (boundary pattern still find-and-replaceable), anti-slop ("exactly the execution slot" overclaims), rollback (triggers not concrete enough). Required rewrite around Modal-specific primitives + humbled framing + sharpened rollback triggers.
+- v2 (rewrite): APPROVE WITH NOTES. All 7 checks PASS. Swap test PASS because Modal API handles anchor it. Anti-slop PASS — "testing whether" + "Curious if this boundary holds" are honestly provisional. Rollback PASS — 4 concrete falsifiable triggers. Strategic risk noted (not wording risk): Modal may still view outer manifests as outside their product scope, which is exactly what the rollback rule catches.
+
+**Gap closed:** OUTREACH.md `T14 send-ready count` now 2/10 (was 1/10). If Keshav rejects the CrewAI angle (e.g., "we don't want to push agents.yaml wrappers"), Modal is the immediate fallback with a different framing — APP.md as non-overlapping envelope above Python stubs, not as wrapper around YAML config. The two candidates cover two distinct product-fit hypotheses:
+- CrewAI: APP.md wraps an existing YAML config (declarative-on-top-of-declarative). Tight fit.
+- Modal: APP.md adds a non-overlapping markdown layer beside Python code (declarative-beside-imperative). Looser fit, honestly disclosed.
+
+This proves the swap-test discipline (codex's tick-14 contribution) catches force-fit on the first try — initial v1 draft for Modal failed swap test, rewrite passed. The 2-LLM independent review (Claude builds, codex reviews) caught the drift that BS-self-check missed.
+
+**Next:** Either (a) Keshav picks CrewAI or Modal and confirms send → T14 fires + endgame met, or (b) next tick promotes a 3rd candidate. Per codex tick-15 plan review: "Clearing Modal is genuine optionality if Keshav rejects CrewAI, but stop at one backup; more candidates before one send becomes busywork." So default-(b) is **NOT** to promote a 3rd candidate. Default-(b) becomes: tick 16 = research-depth upgrades on the 8 remaining candidates (verify Sources URLs, find verified channels) WITHOUT clearing send-ready gates, so when Keshav says "I'd rather pitch n8n/Lindy/Replit instead," the candidate is one tick away from send-ready instead of starting from `partial`.
+
+If Keshav approves CrewAI or Modal next message, T14 fires immediately.
+
+**Signal:** [TICK_COMPLETE] metric=gates_cleared=4/4,send_ready_count=2/10,draft_word_count=90,codex_swap_test=PASS,output_review_iterations=2
