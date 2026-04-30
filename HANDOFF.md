@@ -389,3 +389,35 @@ The verdict — "0/10 send-ready" — is the honest claim. My initial framing ("
 If Keshav doesn't pick a target this cycle, T14 becomes a research tick (clear send-ready gates on 1-2 entries) instead of a send tick. That's per the codex-tightened send-checklist step 0.
 
 **Signal:** [TICK_COMPLETE] metric=entries=10/10,sources_cited=9/10,send_ready=0/10,fixes_applied=11/11
+
+---
+
+### Tick 14 — 2026-04-30T03:48Z
+
+**Horizon:** APP.md v1 spec endgame — closing send-ready gates on the 10 OUTREACH.md candidates so app-T14 can fire on Keshav's pick.
+
+**Task:** Per codex's tick-13 correction (send-checklist step 0: "if no entry has T14 status cleared, T14 is a research tick, not a send tick"), this tick promoted ONE candidate (CrewAI) from `Research depth: partial` to `send-ready-pending-approval` by clearing all 4 gates: G1 schema, G2 channel, G3 anchor, G4 ≤100-word draft.
+
+**Metric:** gates_cleared=4/4, send_ready_count=1/10, draft_word_count=86 (cap 100), swap_test=PASS, codex_output_review=APPROVE.
+
+**BS check:**
+- G1 verified: docs.crewai.com/concepts/agents quoted verbatim ("Using YAML configuration provides a cleaner, more maintainable way to define agents. We strongly recommend using this approach in your CrewAI projects."). agents.yaml fields `role`, `goal`, `backstory` cited from same page.
+- G2 verified: community.crewai.com (818 topics in CrewAI Community Support category) + github.com/crewAIInc/crewAI/discussions both confirmed live as official surfaces. Founder João Moura downgraded to routing clue.
+- G3 verified: CrewAI v1.14.3 (released 2026-04-24, 6 days before this tick) added checkpoint/fork for standalone agents + e2b/Daytona sandbox tool integrations per github.com/crewAIInc/crewAI/releases. Anchor is fresh and concretely about the sandbox layer where APP.md `runtime: ec2 | subprocess` sits.
+- G4 verified: 86 words, anchored on G3, no asks beyond "happy to jam on it if so" (frame-mog discipline).
+- Anti-slop: OSSA (openstandardagents.org) acknowledged in anti-pitch — no "first/only" claims; APP.md differentiation framed as markdown-native frontmatter + 65-line reference parser + audit-driven scope.
+- Final gate (G5, manual): Keshav reviews + edits + approves the message draft before any send fires. Per safety policy and prior feedback memory, no irreversible action without explicit confirm.
+
+**Codex plan review:** "Approve with corrections" — single-candidate research tick (no backup-target padding); use `send-ready-pending-approval` not `send-ready-draft`; quote-block the message; G2 only counts if the channel is an official public/community surface, not an unrelated GitHub issue/PR comment. All applied.
+
+**Codex output review:** APPROVE on all 7 checks: swap test PASS (draft only makes sense for CrewAI), word count 86 ≤100, anti-slop PASS (claims are citable), anchor freshness PASS (6 days), channel discipline PASS (founder = routing clue), OSSA acknowledgment PASS (no defensive framing), no asks PASS ("happy to jam" is pulling not pushing). Sources double-checked: [agents docs](https://docs.crewai.com/en/concepts/agents), [releases](https://github.com/crewAIInc/crewAI/releases), [community](https://community.crewai.com/), [discussions](https://github.com/crewAIInc/crewAI/discussions), [OSSA](https://openstandardagents.org/).
+
+**Gap closed:** Before this tick, OUTREACH.md was 10 candidates with research-depth labels but 0/10 cleared for send. After: 1/10 cleared. Concretely, Keshav can now pick CrewAI, edit the 86-word draft inline, and confirm send to community.crewai.com or github.com/crewAIInc/crewAI/discussions — no further pre-send research needed for that target. The 9 remaining candidates have a per-entry "T14 status" telling the next research tick exactly what to clear (e.g. "Need exact parser/schema URL and verified community channel" for n8n).
+
+The "swap test" anti-slop check (codex's idea, applied here for the first time) is now a proven gate: if a draft can be retargeted by find-and-replace, G4 fails. CrewAI draft passed because `agents.yaml` + crew framing + v1.14.3 sandbox details are framework-specific.
+
+**Next:** Either (a) Keshav picks CrewAI and confirms send → T14 fires + endgame met, or (b) next forgepilot tick promotes a 2nd candidate (likely Modal — confirmed has Python `App` decorator pattern, has a public docs site at modal.com/docs, and recent v2 redirect on docs.modal.com is a candidate G3 anchor) so the OUTREACH list has redundancy if Keshav rejects the CrewAI angle.
+
+If next tick fires before Keshav reviews, default to (b). Don't re-promote CrewAI; one send-ready-pending-approval at a time per target.
+
+**Signal:** [TICK_COMPLETE] metric=gates_cleared=4/4,send_ready_count=1/10,draft_word_count=86,codex_swap_test=PASS
