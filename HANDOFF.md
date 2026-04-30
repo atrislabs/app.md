@@ -551,3 +551,19 @@ The plan-review hook is doing structurally different work than output-review. Bo
 **Next:** same trigger rule. Either (a) Keshav picks → next tick fires send, or (b) Keshav requests a new candidate → next tick promotes from partial → moderate → send-ready, or (c) trigger fires again → another clean SKIP.
 
 **Signal:** [SKIP_TICK] reason=Keshav-attention-bottleneck
+
+---
+
+### Tick 19 — 2026-04-30T04:54Z
+
+**Horizon:** APP.md v1 endgame T14. Unchanged.
+
+**Task:** [SKIP_TICK] per PICK_SHEET trigger rule. Sheet exists, no Keshav pick, no new candidate request. Second consecutive skip (after tick 18).
+
+**Metric:** consecutive_skips=2, send_ready_count=2/10 unchanged.
+
+**Honest signal:** 2 SKIPs in a row means the cron is firing faster than the upstream bottleneck (Keshav-attention) can clear. Forgepilot never self-halts (cron does), but the loop is now generating SKIP entries, not progress. If tick 20 also fires and Keshav still hasn't picked → 3 consecutive SKIPs → recommend pausing the `/loop` cron with `CronList` + `CronDelete <id>` and resuming when Keshav is ready to pick. The pick sheet is durable; it doesn't expire.
+
+**Next:** same trigger rule. Either Keshav picks, or tick 20 SKIPs and triggers the pause-cron recommendation.
+
+**Signal:** [SKIP_TICK] reason=Keshav-attention-bottleneck (consecutive=2)
