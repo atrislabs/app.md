@@ -127,12 +127,17 @@ A conforming parser:
 1. MUST reject APP.md without YAML frontmatter delimited by `---` on its own line.
 2. MUST validate `slug` is lowercase with no spaces.
 3. MUST validate `runtime` is one of the 8 enum values.
-4. MUST treat unknown frontmatter fields as **errors** (fail-closed) until a `schema_version` bump explicitly relaxes this.
+4. **Fail-closed scope** — three rules that together replace the prior single "unknown = error" rule:
+   - **4a.** MUST reject manifests missing any **required** field, or with a required field of the wrong type / enum value.
+   - **4b.** MUST reject **known-but-misused** fields — e.g. `block_pipeline_id` on `runtime: web`, any executable binding on `runtime: template`, an invalid IANA timezone, an unknown enum value for a known field.
+   - **4c.** Non-strict parsers MUST tolerate unknown frontmatter keys at the top level (warn, continue parsing) and MUST preserve unknown fields verbatim when re-emitting a manifest that parsed successfully. This is what lets a `schema_version: 1` parser keep working when the spec adds new optional fields within v1 (e.g. `description`, `timezone`). Strict conformance mode (e.g. a CI lint flag) MAY reject unknown keys before re-emission; in strict mode preservation is not required on a failed parse. Strict mode is OPTIONAL and not part of the runtime contract.
+   - **Closed sub-schemas:** rule 4c does NOT apply inside `secrets`, `auth`, `endpoints.*`, or `monetization`. These blocks have a fixed key shape and are treated as closed; unknown nested keys MUST be rejected. Adding new keys inside a closed block bumps `schema_version`.
+   - **Open user-defined blocks:** `events_schema` and `ui_spec` are open by design — their keys are app-defined (event names; layout hints). Parsers MUST NOT reject unknown keys inside these blocks. They are part of the manifest's contract, not the spec's.
 5. MUST treat `secrets` as names only — never resolve values during parse.
 6. MUST surface a stable `spec_digest` (SHA-256 of the canonicalized record) so callers can detect drift between APP.md and any cached registration.
 
 ## Spec evolution
 
-This is `schema_version: 1`. Field additions that are backwards-compatible (new optional fields, new enum values that callers can ignore) do not bump the version. Anything that requires existing parsers to change (renamed required field, removed enum value, semantic shift) bumps to `schema_version: 2` and ships a migration note in CHANGELOG.
+This is `schema_version: 1`. Field additions that are backwards-compatible (new optional fields at the top level, new enum values that callers can ignore) do not bump the version — they are forward-compatible per Rule 4c (parsers warn-and-continue and preserve the field on re-emit). Anything that requires existing parsers to change (renamed required field, removed enum value, semantic shift, additions inside a closed sub-schema) bumps to `schema_version: 2` and ships a migration note in CHANGELOG.
 
 The reference parser pins schema validation to `schema_version`, so old apps keep parsing under their declared version.

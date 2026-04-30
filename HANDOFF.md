@@ -98,3 +98,25 @@
 **Next:** app-T7 — Reconcile fail-closed rule (#4) with version-bump policy. Currently they self-contradict: rule #4 says reject any unknown frontmatter field; spec evolution says new optional fields don't bump version (so old parsers see "unknown" and reject). Two-tick chain: define a "reserved word allowlist" or scope fail-closed to required-unknown only. This is the keystone of forward-compatible spec evolution. Falsifier check: does any other field besides timezone hit this same rock? (`description` from app-T1 had the same issue; `_none_` table row from app-T2 doesn't introduce a new field.) Both v1-introduced; both need the same reconciliation.
 
 **Signal:** [TICK_COMPLETE] metric=spec_timezone_field_defined=1,bugs_fixed=1
+
+---
+
+## Tick 4 — 2026-04-29 (app-T7: fail-closed reconcile)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T7 — Reconcile rule #4 ("MUST treat unknown frontmatter fields as errors") with spec evolution policy ("new optional fields don't bump version"). The two were a direct contradiction; ticks 1 and 3 silently relied on a parser model that did not exist.
+
+**Metric:** Validation rule 4 split from a single self-contradicting line into 4a (missing/wrong-typed required), 4b (known-but-misused), 4c (unknown top-level: warn + continue + preserve verbatim on re-emit). Closed-block carve-out for security/fixed-shape (`secrets`, `auth`, `endpoints.*`, `monetization`). Open-block carve-out for user-defined (`events_schema`, `ui_spec`). Spec evolution clause cites Rule 4c by name. Tick 1 (`description`) + tick 3 (`timezone`) fields are now legal under v1 forward-compat.
+
+**BS check:** ran. Every existing key inside closed blocks (auth.type/issuer, monetization.price_credits/creator_share) matches a SPEC-declared key — no manifest will reject under the new closed-schema rule. Caught a near-miss during this check: codex's plan review suggested adding `events_schema` + `ui_spec` to the closed list, but those are explicitly "free-form / app-defined" per their SPEC rows. Closing them would reject every manifest with custom event names. Reverted before commit and added an explicit "Open user-defined blocks" carve-out instead.
+
+**Codex plan review:** APPROVED option C (split rule 4 into 4a/4b/4c). Strengthened wording: SHOULD → MUST tolerate (SHOULD too weak when evolution depends on it); "passthrough dict" → behavior-level "MUST preserve verbatim on re-emit"; clarified `--strict` is OPTIONAL conformance mode, not required CLI shape.
+
+**Codex output review:** APPROVED with three fixes (extend closed list with `runtime_auth`/events_schema/ui_spec/monetization; clarify strict-mode preservation rule; flagged spec_digest drift risk for app-T6). Applied fixes 1+2 with a correction caught during BS check (events_schema and ui_spec stay OPEN, not closed). Risk #3 (spec_digest drift on preserved unknowns) deferred to app-T6.
+
+**Gap closed:** 4 of 8 codex punch-list issues. The keystone for v1 forward-compat is in place — JSON Schema work in app-T9 has a clean translation: root `additionalProperties: true` + closed sub-schemas with `additionalProperties: false` + per-runtime conditional rules. Without this tick, ticks 1 and 3 were spec changes that no parser could honor.
+
+**Next:** app-T6 — Define `spec_digest` canonicalization. Currently SPEC.md says "SHA-256 of the canonicalized record" without defining canonicalization. Codex flagged this in tick 4 output review as the open risk: if preserved-unknown fields participate in the digest, every parser computes a different hash; if they don't, the digest doesn't reflect the manifest's actual content. Need to specify: (a) JSON serialization (sorted keys, no whitespace, UTF-8), (b) which fields are excluded from the digest (likely none — preserve = participate), (c) handling of float ordering / null fields. Falsifier: pick one example, hand-compute a digest, see if SPEC.md prescribes a unique answer.
+
+**Signal:** [TICK_COMPLETE] metric=fail_closed_rules_split=3
