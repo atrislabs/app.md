@@ -535,3 +535,19 @@ The plan-review hook is doing structurally different work than output-review. Bo
 - IF tick 18 fires before Keshav response → SKIP_TICK with reason=Keshav-attention-bottleneck. No new upgrades. The sheet exists; the bottleneck is upstream.
 
 **Signal:** [TICK_COMPLETE] metric=pick_sheet_built=1,rows=4,trigger_rule=binding,send_ready_count=2/10,plan_pivot_caught_busywork=1
+
+---
+
+### Tick 18 — 2026-04-30T04:39Z
+
+**Horizon:** APP.md v1 endgame T14. Unchanged.
+
+**Task:** [SKIP_TICK] per the binding trigger rule in PICK_SHEET.md (built tick 17): `IF sheet exists AND no pick → SKIP_TICK reason=Keshav-attention-bottleneck`. Sheet exists, Keshav has not picked, no new candidate request from Keshav. Rule fires cleanly.
+
+**Metric:** ticks_skipped_per_rule=1, send_ready_count=2/10 unchanged, OUTREACH/PICK_SHEET state unchanged.
+
+**Why no work:** the value of pre-committing to a binding rule (tick 17) is that subsequent ticks don't deliberate when the rule fires. Adding more candidates, rewording the sheet, or "polishing" anything would be the exact busywork tick 17 banned. Plan review and output review skipped on purpose — both are for ticks that produce work; SKIP is the work.
+
+**Next:** same trigger rule. Either (a) Keshav picks → next tick fires send, or (b) Keshav requests a new candidate → next tick promotes from partial → moderate → send-ready, or (c) trigger fires again → another clean SKIP.
+
+**Signal:** [SKIP_TICK] reason=Keshav-attention-bottleneck
