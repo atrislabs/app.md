@@ -314,3 +314,32 @@ Codex correctly flagged that this corpus does NOT prove FULL v1 conformance — 
 **Next:** app-T12 — Finalize `LAUNCH.md` (Amazon-style PR/FAQ format). Was drafted in a prior session but never committed. Plan: pull the draft from prior session memory or rewrite from scratch (probably faster given context); 1-page launch announcement framed as a press release with FAQ. Falsifier: codex review against the actual AWS PR/FAQ template — the artifact must answer "who is the customer", "what's the most important benefit", "what's the customer experience", and have a 5-question FAQ about adoption / migration / governance / scope / future versions. After T12, T13 (OUTREACH.md target list with personalized one-liners per recipient) and T14 (1 outbound notification, requires Keshav confirm before send).
 
 **Signal:** [TICK_COMPLETE] metric=loc=65,binary_checks=38/38,bs_scenarios=5/5
+
+
+---
+
+## Tick 12 — 2026-04-29 (app-T12: LAUNCH.md PR/FAQ shipped)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T12 — Ship `LAUNCH.md` as Amazon-style press-release-FAQ for the v1 release. The four code/spec artifacts (SPEC, schema, fixtures, validator) are in place; LAUNCH gives OUTREACH (T13) a concrete value-prop link. PR/FAQ format forces internal clarity on customer / benefit / experience.
+
+**Metric:**
+- File `LAUNCH.md` exists, 72 lines (well under 250-line cap).
+- Hits all 5 PR/FAQ structural elements: headline, subhead, 1-paragraph body, leadership quote, scope+availability paragraph.
+- 5 FAQ questions matching planned categories: customer identity, most-important-benefit, adoption experience, evolution governance, scope exclusions.
+- 5/5 internal links resolve to real files in this commit (SPEC.md, schema/app.v1.schema.json, fixtures/, scripts/validate.py, scripts/run_fixtures.py).
+- "not a runtime" and "not a marketplace" disclaimers explicit per codex output review.
+- Adoption table starts with reference implementation (atrisos-backend, 7 apps), framed honestly: "external rows added only after public adoption lands."
+
+**BS check:** ran. (a) Codex output review caught a fake-but-labeled customer quote and an unmeasured "4 hours" claim — both worded honestly enough to pass casual reading but flagged correctly as trust-eroding. Both removed/reframed. (b) Internal links verified post-edit (5/5 resolve). (c) No "v2 feature preview" creep into v1 launch (per plan-review correction). (d) Atris team quote rewritten from "standards stop being standards…" cuteness to a substantive line about schema governance mechanics (Rule 4c forward-compat + closed-block discipline + schema_version semantics).
+
+**Codex plan review:** APPROVED with 3 corrections all applied: don't present a fake customer quote as real (label or remove — output review later forced removal), skip v2 feature preview, cite full path `schema/app.v1.schema.json` not just "schema/".
+
+**Codex output review:** "NOT APPROVED yet" → "Approved" after 5 fixes all applied: (1) Removed the anonymous customer quote entirely (labeled fake still reads fake — codex correctly held the line). (2) "Roughly four hours" → "v1 design target is one work-day" with explicit "we'll publish actual times once the first external adoption lands" — distinguishes target from claim. (3) Added explicit "APP.md is not a runtime, and APP.md is not a marketplace" disclaimer in scope section. (4) Reframed adoption table: "Reference implementation first; external rows added only after public adoption lands" — credibility-positive framing for the empty-external-state. (5) Rewrote Atris team quote around schema governance mechanics (forward-compat, closed-block discipline) instead of meta-cuteness. Codex's lead-paragraph score was 2/3 — final draft tightened the lead so the most-important-fact ("an app written for one AI runtime now runs unchanged on another") is the first sentence after the headline.
+
+**Gap closed:** OUTREACH.md (T13) can now ship a single link that says "here's what we built and why it matters" instead of asking recipients to derive value from raw artifacts. Strangers reading github.com/atrislabs/app.md now see five things in order: README (what), SPEC (the rules), schema+fixtures+validator (the proof), LAUNCH (the why-now). The four T9-T11 artifacts gave technical credibility; T12 gives narrative clarity. That's all four corners of "real public standard" except actual external adoption, which is a T13/T14/post-launch concern.
+
+**Next:** app-T13 — Write `OUTREACH.md` with target list. Plan: a private-to-Atris file enumerating ~10 candidate runtime/platform companies (Wordware, Lindy, Cognition, agentskills.io, Modal, Replit Agents, Vercel AI SDK, Cloudflare AI Workers, etc.) each with: (a) why they'd care (specific pain APP.md solves for THEIR architecture), (b) the right contact (eng lead, not marketing), (c) a personalized one-liner (NOT a template), (d) the LAUNCH.md link as the "why now" hook. The goal is NOT to ship outreach this tick — the goal is to ship a CURATED list ready for Keshav to review before T14 (which sends ONE notification, with confirm). Falsifier: if any of the 10 entries reads like "I'd send this to anyone," it's wrong; each line must show specific knowledge of their stack.
+
+**Signal:** [TICK_COMPLETE] metric=loc=72,faq_questions=5/5,links_resolve=5/5,fixes_applied=5/5
