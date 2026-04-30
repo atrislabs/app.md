@@ -18,7 +18,7 @@ Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails 
 |---|---|---|
 | `schema_version` | int ≥ 1 | Bump on breaking change |
 | `name` | string | Human-readable |
-| `slug` | string | Lowercase, no spaces. Identifies the app in URLs / vaults / runs |
+| `slug` | string | Identifier used in URLs, vaults, run keys. MUST match regex `^[a-z][a-z0-9]*(-[a-z0-9]+)*$` (lowercase letter to start; groups of `[a-z0-9]+` joined by single hyphens; no leading digit, no underscores, no double hyphens, no trailing hyphen) and MUST be 1–64 characters long. The same grammar applies to `member`, `skills[]`, and `created_by_agent`. |
 | `access` | enum | `private` \| `business` \| `public` |
 | `runtime` | enum | One of the 8 runtimes (see below) |
 | `vault` | enum | `atris-kms` \| `app_secrets` \| `byo-aws` \| `local` |
@@ -125,7 +125,8 @@ There's no required structure for the body; treat it as the briefing you'd give 
 A conforming parser:
 
 1. MUST reject APP.md without YAML frontmatter delimited by `---` on its own line.
-2. MUST validate `slug` is lowercase with no spaces.
+2. MUST validate `slug` against the regex `^[a-z][a-z0-9]*(-[a-z0-9]+)*$` and a length of 1–64 characters. The regex is anchored and case-sensitive (Unicode and uppercase are implicitly rejected). No coercion (lowercasing, hyphen-collapsing, etc.) is permitted — invalid slugs are rejected, not normalized.
+2a. MUST apply the same regex + length rule to `member`, every item of `skills[]`, and `created_by_agent`. They are slug-typed; mismatched values reject the manifest.
 3. MUST validate `runtime` is one of the 8 enum values.
 4. **Fail-closed scope** — three rules that together replace the prior single "unknown = error" rule:
    - **4a.** MUST reject manifests missing any **required** field, or with a required field of the wrong type / enum value.

@@ -164,3 +164,25 @@
 **Next:** app-T5 — Tighten `slug` grammar in SPEC.md. Currently "Lowercase, no spaces" — underspecified. Codex flagged this. Likely fix: add regex `^[a-z][a-z0-9-]*$` to Validation Rules and to the slug row in the Required-fields table. Falsifier: grep all 10 manifest slugs to confirm they match the proposed regex; if any don't (e.g. starts with digit, has underscore), spec must accommodate or examples must change.
 
 **Signal:** [TICK_COMPLETE] metric=block_pipeline_id_compliance=6/6
+
+---
+
+## Tick 7 — 2026-04-29 (app-T5: slug grammar tightened)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T5 — Tighten slug grammar. SPEC said "lowercase, no spaces" — admits abc_def, 1abc, abc--def, abc.io, etc.
+
+**Metric:** Slug rule pinned to regex `^[a-z][a-z0-9]*(-[a-z0-9]+)*$` + 1–64 chars + no coercion. 10/10 existing manifest slugs pass; the worked-example single-letter `x` from canonicalization passes; 9 negative controls correctly rejected (caps, underscore, leading digit, leading/trailing/double hyphen, empty, 65-char, dot). Same rule normatively applied to member, skills[] items, created_by_agent (added rule 2a so prose cross-reference can't be missed by validator authors).
+
+**BS check:** ran. python3 `re` module verified: 10/10 + worked-example PASS, 9 negative controls REJECTED, length cap enforced. Rule is provably consistent and auditable.
+
+**Codex plan review:** APPROVED. Confirmed regex `^[a-z][a-z0-9]*(-[a-z0-9]+)*$` over the looser `^[a-z0-9-]+$`. Added 1-64 char length cap (codex suggestion). Confirmed no reserved-slug rule needed in v1; uniqueness is registry-layer, not grammar.
+
+**Codex output review:** APPROVED with one normative-cite fix: add explicit rule line for member/skills[]/created_by_agent rather than just a prose cross-reference. Applied as rule 2a. Codex confirmed JSON Schema translation: `pattern`, `minLength: 1`, `maxLength: 64`, no coercion.
+
+**Gap closed:** 7 of 8 codex punch-list issues. Slug grammar is now byte-level conformance-checkable, with a provably-correct test suite (verified live). JSON Schema work in app-T9 inherits a one-liner pattern field.
+
+**Next:** app-T8 — Resolve README/CLI mismatch. README says `python -m scripts.apps_cli validate my-standup` but no `scripts/` directory exists in the app.md repo (the CLI lives in atrisos-backend). Three options codex flagged: (a) remove the references, (b) ship a tiny `scripts/apps_cli.py` in this repo, (c) make README explicit that the CLI lives in atrisos-backend. Best choice: probably (c) for honesty + maybe a minimal validator stub for app-T11. Don't pre-empt the validator work though — keep this tick to the README fix.
+
+**Signal:** [TICK_COMPLETE] metric=slug_regex_pinned=1,manifests_pass=10/10,negative_controls_reject=9/9
