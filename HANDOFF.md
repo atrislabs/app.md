@@ -277,3 +277,40 @@ Codex correctly flagged that this corpus does NOT prove FULL v1 conformance — 
 **Next:** app-T11 — Ship a 50-line reference validator at `scripts/validate.py` in the app.md repo. Public-facing example: parse APP.md frontmatter, validate against schema, print clean JSON or structured error. Different from `scripts/run_fixtures.py` (which validates the corpus); this is "validate ONE manifest" — the simplest possible APP.md tool, the thing OUTREACH.md (T13) recipients can copy as their starting parser. Pure stdlib + 2 deps (PyYAML, jsonschema). Falsifier: piping any of the 10 valid fixtures should print canonical JSON exit 0; piping any of the 13 invalid fixtures should print the failing path and exit non-zero.
 
 **Signal:** [TICK_COMPLETE] metric=valid_pass=10/10,invalid_reject=13/13,tamper_caught=4/4
+
+
+---
+
+## Tick 11 — 2026-04-29 (app-T11: 65-line public reference validator)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T11 — Ship `scripts/validate.py` as the simplest possible public reference parser. Different from `scripts/run_fixtures.py` (which validates the corpus): this is "validate ONE manifest, print canonical JSON or per-error lines, exit 0/1/2." The artifact OUTREACH.md (T13) recipients copy as their starting parser. README.md updated to feature it alongside the conformance suite.
+
+**Metric:**
+- File `scripts/validate.py` = 65 lines including 9-line public-contract docstring (codex approved 60 as the line target; final at 65 after 5 lines added for graceful YAML error handling per output review).
+- 10/10 fixtures/valid/*.yaml → exit 0 (with canonical JSON).
+- 13/13 fixtures/invalid/*.yaml → exit 2 (with `<dotted-path>: <message>` per error).
+- 7/7 examples/*/APP.md → exit 0.
+- 3/3 templates/*/APP.md → exit 0.
+- Stdin via `-` works for both bare YAML and APP.md frontmatter+body.
+- Missing file → exit 1 with `error: not found:` to stderr.
+- No args → exit 1 with usage to stderr.
+- Total: 33 in-repo binary checks PASS + 5 BS scenarios PASS = 38/38.
+
+**BS check:** ran on novel inputs not in any fixture:
+- (a) `sed 's/atris-revenue/ATRIS-REVENUE/' examples/atris-revenue/APP.md | validate.py -` → exit 2 + `slug: 'ATRIS-REVENUE' does not match …`. Tampering is caught with the right path.
+- (b) bare manifest.yaml that starts with `---` (YAML doc marker, no closing `---`) → correctly parsed as bare YAML, exit 0. *This was codex's "biggest miss" in output review — fixed by treating "no closing `---`" as evidence the file is bare YAML, not unclosed APP.md frontmatter. Falls back to `yaml.safe_load(text)` which handles `---` doc markers natively.*
+- (c) APP.md whose body contains a literal `---` line → frontmatter still correctly extracted (line-delimited splitting, not raw `text.split('---', 2)`).
+- (d) Invalid YAML (`bad-indent` mapping) → exit 2 with `<root>: parse error: …`, no traceback. Was failing with a raw stack trace before output-review fix.
+- (e) Unclosed APP.md frontmatter (only opening `---`) → after the disambiguation fix, treated as bare YAML (graceful). Edge but consistent: the file STARTS with `---` but has no closer, so we don't assume APP.md.
+
+**Codex plan review:** APPROVED with corrections all applied: skip spec_digest (deferred to T11b), drop `--strict` flag, add `-` stdin only if it stays under 60 LOC, document deps in docstring.
+
+**Codex output review:** CONDITIONAL APPROVE with 4 fixes all applied: (1) Replaced `text.split("---", 2)` with line-by-line scan for `---` on its own line — protects against `---` inside scalar text. (2) Dropped walrus operator `(p := Path(...)).exists()` — boring is portable. (3) Wrapped `extract_frontmatter` in try/except for `yaml.YAMLError | ValueError` — invalid YAML now exits 2 with a clean `<root>: parse error: …` line instead of a Python traceback. (4) Added explicit `encoding="utf-8"` on `read_text` for both source files and the schema. The "biggest miss" Codex flagged — bare manifest.yaml with leading `---` doc marker — is fixed by the line-by-line scan returning empty and falling through to bare YAML parse.
+
+**Gap closed:** OUTREACH credibility is now load-bearing on a real artifact. A stranger landing on github.com/atrislabs/app.md sees: SPEC.md (200 lines normative), schema/ (the JSON Schema), fixtures/ (conformance corpus), AND scripts/validate.py (a 65-line file they can read in 60 seconds and copy verbatim into their own repo). Three of the four artifacts are in place; T12 (LAUNCH.md) and T13 (OUTREACH.md) are about messaging, not code.
+
+**Next:** app-T12 — Finalize `LAUNCH.md` (Amazon-style PR/FAQ format). Was drafted in a prior session but never committed. Plan: pull the draft from prior session memory or rewrite from scratch (probably faster given context); 1-page launch announcement framed as a press release with FAQ. Falsifier: codex review against the actual AWS PR/FAQ template — the artifact must answer "who is the customer", "what's the most important benefit", "what's the customer experience", and have a 5-question FAQ about adoption / migration / governance / scope / future versions. After T12, T13 (OUTREACH.md target list with personalized one-liners per recipient) and T14 (1 outbound notification, requires Keshav confirm before send).
+
+**Signal:** [TICK_COMPLETE] metric=loc=65,binary_checks=38/38,bs_scenarios=5/5

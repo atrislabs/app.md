@@ -84,6 +84,17 @@ python3 -m scripts.apps_cli run      /path/to/my-standup   # execute (local / su
 
 The folder path can be absolute or relative — the CLI resolves it. The commands above use Atris as the reference runtime; APP.md itself is runtime-agnostic, see [SPEC.md](./SPEC.md).
 
+For a no-runtime, validate-only check, this repo ships a 65-line reference parser (`scripts/validate.py`) — copy it as the starting point for your own implementation:
+
+```bash
+pip install "PyYAML>=6,<7" "jsonschema>=4,<5"
+python3 scripts/validate.py examples/atris-revenue/APP.md   # → exit 0 + canonical JSON
+python3 scripts/validate.py path/to/broken.yaml             # → exit 2 + per-error lines
+cat APP.md | python3 scripts/validate.py -                  # stdin
+```
+
+Run the full conformance suite (10 valid + 13 invalid fixtures) with `python3 scripts/run_fixtures.py`. The schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`).
+
 ## Examples
 
 Seven real apps that ship in production, illustrating most of the schema surface:
