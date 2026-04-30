@@ -1,0 +1,9 @@
+schema_version: 1
+name: bpid-web
+slug: bpid-web
+access: public
+runtime: web
+vault: app_secrets
+block_pipeline_id: 12345678-1234-1234-1234-123456789abc
+endpoints:
+  frontend: https://x.example.com

@@ -1,0 +1,8 @@
+schema_version: 1
+name: private-web
+slug: private-web
+access: private
+runtime: web
+vault: app_secrets
+endpoints:
+  frontend: https://x.example.com

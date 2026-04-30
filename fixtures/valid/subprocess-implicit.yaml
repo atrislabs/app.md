@@ -1,0 +1,10 @@
+schema_version: 1
+name: Implicit Subprocess
+slug: implicit-subprocess
+access: private
+runtime: subprocess
+vault: atris-kms
+description: No block_pipeline_id - body + member + skills form an implicit pipeline.
+member: researcher
+skills:
+  - web-search

@@ -1,0 +1,152 @@
+{
+  "$comment": "APP.md v1 conformance corpus index. Pins SHA-256 of every fixture and the failure semantics each invalid case asserts. The runner verifies filesystem matches this index exactly.",
+  "schema": "schema/app.v1.schema.json",
+  "valid": [
+    {
+      "path": "fixtures/valid/ec2-with-schedule.yaml",
+      "sha256": "37741ce44ed8a76212f479cf9338b64c370bcfc8cc44dcd9311cce78f53a8efb"
+    },
+    {
+      "path": "fixtures/valid/external-oauth.yaml",
+      "sha256": "faea21605ee15b92ff53b847f3c5d07aa8cffd0bea92f9c4052d95ede20c85fd"
+    },
+    {
+      "path": "fixtures/valid/ios.yaml",
+      "sha256": "908782e3488ebdeba25b3d777b954f9e391cfcd214a9395764897fadce7ed360"
+    },
+    {
+      "path": "fixtures/valid/minimal-local.yaml",
+      "sha256": "df00470e73b2f987db0fd88e9418a9bbd5ceb6b74464960ef6409bbd15a01599"
+    },
+    {
+      "path": "fixtures/valid/subprocess-implicit.yaml",
+      "sha256": "d6d738ad2fa0030dec1fa44c71b06f5215072d499a8174364626f9e8cb8adbb1"
+    },
+    {
+      "path": "fixtures/valid/subprocess-with-pipeline.yaml",
+      "sha256": "b77270db2d7a993557227e458334aae0a21c7bbbc390d10f83bc5f0ca2b109ef"
+    },
+    {
+      "path": "fixtures/valid/template.yaml",
+      "sha256": "725fac766c3404c8446e766349c7174554b54f4d1a6f7d026c8a7c028cbe9269"
+    },
+    {
+      "path": "fixtures/valid/web-public.yaml",
+      "sha256": "c3e72ebde7cc905b9e4d5cbff924939e43c73573f3eb9eb3db2be7c4601c7f90"
+    },
+    {
+      "path": "fixtures/valid/webhook-private.yaml",
+      "sha256": "cace0891760f04f7df7705639f10df2f2b4d630dfbe565532a679dbb48a29801"
+    },
+    {
+      "path": "fixtures/valid/with-events-schema.yaml",
+      "sha256": "a3b3fd92bf64637c80a04084a95ceffcb4f35baac31524ccc848cf499a529422"
+    }
+  ],
+  "invalid": [
+    {
+      "path": "fixtures/invalid/auth-unknown-key.yaml",
+      "sha256": "2a4b455b0033064c0392d7c453eacc37d6ec594244882fa2f425d698f922d89a",
+      "keyword": "additionalProperties",
+      "expected_paths": [
+        "auth.rotation_days"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-runtime-enum.yaml",
+      "sha256": "d5c68443f2aacbc53fdb5b3284c49bc44261fd2010413fa53369152ad93d3030",
+      "keyword": "enum",
+      "expected_paths": [
+        "runtime"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/block-pipeline-id-null.yaml",
+      "sha256": "1b2615798f45c0c01b0616954e9dbc25e0471da8ab24436e62e6ed856c06e280",
+      "keyword": "type",
+      "expected_paths": [
+        "block_pipeline_id"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/block-pipeline-id-on-web.yaml",
+      "sha256": "be057f66d3f13e926f46a122586267e238ce2a4ff60c164d499b45b24f4dff35",
+      "keyword": "not",
+      "expected_paths": [
+        "block_pipeline_id"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/missing-required-vault.yaml",
+      "sha256": "fa6902cbf72739bc0fd35fb379b4fb294fcf7539f69f47ec9a947bf676bd5f35",
+      "keyword": "required",
+      "expected_paths": [
+        "vault"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/monetization-unknown-key.yaml",
+      "sha256": "bd2e85f3eaf5bb8452f8d46d7f9904623e8f973b531fac087d20841c5123c7c9",
+      "keyword": "additionalProperties",
+      "expected_paths": [
+        "monetization.rebate_pct"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/multiline-description.yaml",
+      "sha256": "813710c14f236332f1a0d638bdad145868e9a466bceeb87d1319c186649371a7",
+      "keyword": "pattern",
+      "expected_paths": [
+        "description"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/oauth-without-issuer.yaml",
+      "sha256": "eb8b803b793ff80ccec1e6322b41dcfda5ce89b5c84f9a067ed14ebad02232f0",
+      "keyword": "required",
+      "expected_paths": [
+        "auth.issuer"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/private-web-no-auth.yaml",
+      "sha256": "fcbb47c1160c51352d098a0b1c1fd6a322dfe83681eafc13ce4ee1ad338d8d55",
+      "keyword": "required",
+      "expected_paths": [
+        "auth"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/schema-version-2.yaml",
+      "sha256": "cf3ac0a607f5f343c2abfcf65b71809850edd635ee117e44f214c34e1778d444",
+      "keyword": "const",
+      "expected_paths": [
+        "schema_version"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/template-with-binding.yaml",
+      "sha256": "60310a2d4a9b3c160bae6159afa0fc20779781633de75f8a14a445929bdbd6f4",
+      "keyword": "not",
+      "expected_paths": [
+        "block_pipeline_id"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/underscore-slug.yaml",
+      "sha256": "e191a4956fb59c6aa020405b0c592df5c8418ebaa6d75fef9367f251f55fca33",
+      "keyword": "pattern",
+      "expected_paths": [
+        "slug"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/uppercase-slug.yaml",
+      "sha256": "a7747959cbf4611885def4ff5a923085c3b2bb39ad1e66a499e599d224bc0732",
+      "keyword": "pattern",
+      "expected_paths": [
+        "slug"
+      ]
+    }
+  ]
+}

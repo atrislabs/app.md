@@ -1,0 +1,7 @@
+schema_version: 1
+name: bpid-null
+slug: bpid-null
+access: private
+runtime: ec2
+vault: atris-kms
+block_pipeline_id: null

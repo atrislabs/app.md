@@ -1,0 +1,11 @@
+schema_version: 1
+name: oauth-no-issuer
+slug: oauth-no-issuer
+access: business
+runtime: external
+vault: atris-kms
+endpoints:
+  api: https://api.example.com
+auth:
+  type: oauth
+  secret_ref: CLIENT_SECRET

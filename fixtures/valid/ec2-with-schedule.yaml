@@ -1,0 +1,16 @@
+schema_version: 1
+name: EC2 With Schedule
+slug: ec2-with-schedule
+access: business
+runtime: ec2
+vault: atris-kms
+description: Daily revenue digest at 09:00 America/Los_Angeles.
+schedule: "0 9 * * *"
+timezone: America/Los_Angeles
+secrets:
+  - STRIPE_KEY
+  - SLACK_BOT_TOKEN
+surfaces:
+  - slack
+  - email
+render: inline

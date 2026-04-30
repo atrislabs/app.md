@@ -243,3 +243,37 @@
 **Next:** app-T10 — Ship `fixtures/valid/` and `fixtures/invalid/` directories. Today the validator has fixtures inline in the test script; they need to live as committed JSON/YAML files so any conformance-test suite can pick them up. Plan: `fixtures/valid/{minimal,with-secrets,with-schedule,subprocess-with-pipeline,template,web-public,webhook-private}.yaml` (~7 fixtures showing each conformance shape) + `fixtures/invalid/{missing-required,bad-runtime,uppercase-slug,multiline-description,oauth-without-issuer,template-with-binding,private-web-no-auth,monetization-unknown-key}.yaml` with a sibling `expected-error.txt` per file documenting the expected jsonpath that fails. Falsifier: a 30-line conformance-test runner over the fixtures directory exits 0 only when every valid passes + every invalid fails with the documented path.
 
 **Signal:** [TICK_COMPLETE] metric=schema_valid=1,manifests_pass=10/10,negative_controls_reject=21/21
+
+
+---
+
+## Tick 10 — 2026-04-29 (app-T10: conformance fixtures + index-driven runner)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T10 — Ship `fixtures/valid/` + `fixtures/invalid/` + `fixtures/conformance.json` (index) + `scripts/run_fixtures.py` (runner). Until now the v1 schema published in tick 9 had only inline test cases in /tmp; a third party building a parser had no public conformance corpus to test against.
+
+**Metric:**
+- 10 valid YAML fixtures, every shape that v1 admits: minimal-local, subprocess-with-pipeline, subprocess-implicit, ec2-with-schedule (timezone: America/Los_Angeles), web-public, webhook-private (auth.type:hmac), external-oauth (auth.type:oauth + issuer), template, ios (bundle_id+deep_link_scheme), with-events-schema (open ui_spec + events_schema).
+- 13 invalid YAML fixtures, each failing under a different schema rule: missing-required, bad-enum, 2 slug-grammar variants, multiline-description, block_pipeline_id-null, block_pipeline_id-on-web, schema_version=2, template-with-binding, private-web-no-auth, oauth-without-issuer, auth-additionalProperties, monetization-additionalProperties.
+- `conformance.json` (index) pins SHA-256 of every fixture + structured `expected_paths` (e.g. `auth.issuer`, `monetization.rebate_pct`) + `keyword` annotation per invalid case.
+- `scripts/run_fixtures.py` is index-driven (not filesystem-driven): asserts FS exactly matches index, sha256 matches, every valid passes, every invalid fails with at least one path matching the case's expected_paths.
+- Live results: 10/10 valid pass + 13/13 invalid reject + 0 failures + exit 0.
+
+**BS check:** 4 tamper scenarios on the tightened (index-driven) runner:
+- (a) modify a valid fixture body → sha256 mismatch → exit 1 ✓
+- (b) add an orphan .yaml file → orphan check fires → exit 1 ✓
+- (c) tamper an invalid fixture so it now passes schema → unexpected-pass → exit 1 ✓
+- (d) clean re-run → exit 0 ✓
+
+**Codex plan review:** APPROVED with 3 corrections all applied: (1) Fixtures are YAML, runner needs PyYAML — declared in deps + README. (2) `.expected.txt` was too implementation-loose — replaced with structured `expected_paths` array per case in `conformance.json`. (3) Runner must also fail on missing `.expected.txt`, count mismatch, and unexpected pass — all enforced.
+
+**Codex output review:** Pushed back on the conformance-scope claim (correctly). Approved as a "Python schema-fixture runner" after 4 tightenings, all applied: (1) Replaced `.expected.txt` files with structured `conformance.json` index containing `keyword` + `expected_paths`. (2) Replaced fragile `not.anyOf[].required` walking — it's still in `normalize_path` as a best-effort, but the index's `expected_paths` is now the source of truth, so future conditionals using exotic `not` shapes can name the forbidden field directly in the index without parser changes. (3) Added SHA-256 hashes per fixture to `conformance.json` to catch vendored/offline drift. (4) Removed hard-coded counts from runner; everything derives from the index.
+
+Codex correctly flagged that this corpus does NOT prove FULL v1 conformance — that's what fixtures/README.md's "What this corpus does NOT prove" section now documents explicitly: YAML pre-canonicalization rejects (duplicate keys/anchors/tags/NaN), `spec_digest` byte-equivalence vectors, IANA timezone validity, cron syntax, unknown-top-level preservation across re-emit (Rule 4c), and body content are all out of JSON Schema's expressive range. They are tracked as future ticks under the umbrella "parser-level conformance corpus" — likely T10b (YAML rejects), T10c (spec_digest vectors), T10d (frontmatter+body fixtures with re-emit round-trip).
+
+**Gap closed:** A third party can now `pip install jsonschema PyYAML && python3 scripts/run_fixtures.py` from a clone of the spec repo and either get exit 0 (their copy of the schema is conformant + the corpus is intact) or a structured per-fixture failure. The schema-shape conformance contract is now machine-enforceable. Quality bar for schema mods: any future schema change MUST keep the suite at exit 0; if not, the schema or the corpus index is wrong.
+
+**Next:** app-T11 — Ship a 50-line reference validator at `scripts/validate.py` in the app.md repo. Public-facing example: parse APP.md frontmatter, validate against schema, print clean JSON or structured error. Different from `scripts/run_fixtures.py` (which validates the corpus); this is "validate ONE manifest" — the simplest possible APP.md tool, the thing OUTREACH.md (T13) recipients can copy as their starting parser. Pure stdlib + 2 deps (PyYAML, jsonschema). Falsifier: piping any of the 10 valid fixtures should print canonical JSON exit 0; piping any of the 13 invalid fixtures should print the failing path and exit non-zero.
+
+**Signal:** [TICK_COMPLETE] metric=valid_pass=10/10,invalid_reject=13/13,tamper_caught=4/4

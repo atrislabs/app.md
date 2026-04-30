@@ -1,0 +1,15 @@
+schema_version: 1
+name: External OAuth
+slug: external-oauth
+access: business
+runtime: external
+vault: atris-kms
+description: External service authenticated via OAuth - issuer required.
+endpoints:
+  api: https://api.example.com/v1
+auth:
+  type: oauth
+  issuer: https://auth.example.com
+  secret_ref: OAUTH_CLIENT_SECRET
+secrets:
+  - OAUTH_CLIENT_SECRET

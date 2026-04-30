@@ -1,0 +1,5 @@
+schema_version: 1
+name: missing-vault
+slug: missing-vault
+access: private
+runtime: local

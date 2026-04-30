@@ -1,0 +1,15 @@
+schema_version: 1
+name: Public Web
+slug: public-web
+access: public
+runtime: web
+vault: app_secrets
+description: Public web app - no auth.type required since access is public.
+endpoints:
+  frontend: https://app.example.com
+surfaces:
+  - web
+render: fullscreen
+ui_spec:
+  theme: light
+  layout: split

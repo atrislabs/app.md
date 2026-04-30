@@ -1,0 +1,14 @@
+schema_version: 1
+name: Private Webhook
+slug: private-webhook
+access: private
+runtime: webhook
+vault: byo-aws
+description: HMAC-signed webhook receiver (non-public requires auth.type).
+endpoints:
+  webhook: https://hooks.example.com/inbound
+auth:
+  type: hmac
+  secret_ref: WEBHOOK_HMAC_SECRET
+secrets:
+  - WEBHOOK_HMAC_SECRET

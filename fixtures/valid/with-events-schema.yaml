@@ -1,0 +1,24 @@
+schema_version: 1
+name: Events Schema Demo
+slug: events-schema-demo
+access: business
+runtime: ec2
+vault: atris-kms
+description: Open user-defined blocks - events_schema and ui_spec accept arbitrary keys.
+schedule: "0 8 * * *"
+timezone: UTC
+secrets:
+  - STRIPE_KEY
+events_schema:
+  daily_burn_computed:
+    cash_on_hand_cents: int
+    monthly_burn_cents: int
+    runway_months: float
+  runway_alert:
+    level: string
+    message: string
+ui_spec:
+  layout: kanban
+  cards:
+    - field: runway_months
+      style: gauge

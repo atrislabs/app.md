@@ -1,0 +1,13 @@
+schema_version: 1
+name: iOS Client
+slug: ios-client
+access: public
+runtime: ios
+vault: app_secrets
+description: Native iOS via App Intents.
+endpoints:
+  bundle_id: com.example.atris
+  deep_link_scheme: atris
+surfaces:
+  - mobile
+render: none

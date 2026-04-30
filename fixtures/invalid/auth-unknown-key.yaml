@@ -1,0 +1,12 @@
+schema_version: 1
+name: auth-extra
+slug: auth-extra
+access: private
+runtime: webhook
+vault: atris-kms
+endpoints:
+  webhook: https://hooks.example.com/in
+auth:
+  type: hmac
+  secret_ref: K
+  rotation_days: 90

@@ -1,0 +1,6 @@
+schema_version: 1
+name: bad
+slug: bad
+access: private
+runtime: lambda
+vault: local

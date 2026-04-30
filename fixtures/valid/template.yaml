@@ -1,0 +1,13 @@
+schema_version: 1
+name: Standup Template
+slug: standup-template
+access: public
+runtime: template
+vault: app_secrets
+description: Marketplace template - no execution binding until forked.
+surfaces:
+  - slack
+render: inline
+monetization:
+  price_credits: 0
+  creator_share: 0.0

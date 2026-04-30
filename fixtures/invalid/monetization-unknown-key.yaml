@@ -1,0 +1,9 @@
+schema_version: 1
+name: mon-extra
+slug: mon-extra
+access: private
+runtime: local
+vault: local
+monetization:
+  price_credits: 0
+  rebate_pct: 0.5

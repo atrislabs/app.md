@@ -1,0 +1,6 @@
+schema_version: 2
+name: future
+slug: future
+access: private
+runtime: local
+vault: local
