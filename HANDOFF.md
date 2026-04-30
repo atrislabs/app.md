@@ -209,3 +209,37 @@
 **Next:** Phase pivot. All 8 punch-list items closed → spec hardening + distribution. Next tick = app-T9: publish normative JSON Schema at `schema/app.schema.json` derived from SPEC.md (root `additionalProperties: true` + closed sub-schemas with `additionalProperties: false` for secrets/auth/endpoints.*/monetization + `pattern: ^[a-z][a-z0-9]*(-[a-z0-9]+)*$` for slug/member/skills[]/created_by_agent + per-runtime conditional rules). Falsifier: validate all 7 public examples + 4 templates against the schema; expect 11/11 pass. After T9: T10 (fixtures/valid|invalid/), T11 (50-line reference validator), T12 (LAUNCH.md), T13 (OUTREACH.md), T14 (1 outbound notification — REQUIRES Keshav confirm).
 
 **Signal:** [TICK_COMPLETE] metric=cli_quickstart_works_end_to_end=3/3,stale_refs_in_readme=0/0
+
+
+---
+
+## Tick 9 — 2026-04-29 (app-T9: normative JSON Schema published)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T9 — Publish normative JSON Schema for APP.md spec v1 at `schema/app.v1.schema.json`. Until now SPEC.md was prose-only; any third party wanting to add APP.md support had to read the spec and guess. Now the schema is machine-checkable in any JSON Schema Draft 2020-12 validator (Python jsonschema, ajv, go-jsonschema, etc.).
+
+**Metric:**
+- Schema file: `schema/app.v1.schema.json`, 168 lines, single self-contained file (no external $refs).
+- `Draft202012Validator.check_schema()` PASSES — schema is a valid JSON Schema 2020-12 document.
+- 10/10 in-repo manifests validate (7 examples + 3 templates).
+- 21/21 negative controls REJECT, covering: missing-required, bad-enum, 5 slug-grammar variants, slug rule on member/skills[]/created_by_agent, multiline description, block_pipeline_id null, block_pipeline_id on wrong runtime, schema_version=2, template-with-binding, private-web-no-auth, oauth-without-issuer, jwt-without-issuer, bad-URL, unknown key inside auth, unknown key inside monetization.
+- $id pinned to `https://atris.ai/schema/app.v1.schema.json` (version-pinnable; v2 will get a new file).
+
+**BS check:** ran on novel inputs not in training data:
+- (a) `schema_version: 2` correctly rejects (const:1 enforces this v1 schema doesn't accept v2 manifests — codex's plan-review correction).
+- (b) `auth.type: oauth` without `issuer` correctly rejects (the conditional codex flagged as missing in output review, then added).
+- (c) Closed sub-schema rejection works on novel field names ("rebate" inside monetization, "extra_field" inside auth).
+- (d) `description: "line1\nline2"` correctly rejects (multiline → spec says single-line, codex flagged in output review, added).
+- (e) URL pattern `^https?://[^\s/$.?#][^\s]*$` rejects "not-a-url" but accepts every example endpoint URL.
+- All 21 rejections produced human-readable jsonpath error messages — not just opaque "validation failed".
+
+**Codex plan review:** APPROVED with 4 corrections all applied: (1) `schema_version: const: 1` (not minimum), (2) version-pinned `$id`, (3) UUID regex (not `format: uuid`), (4) auth-conditional for non-public web/webhook/external + forbid block_pipeline_id on local. Codex also flagged collision check clean (no pytest, no MAP, no Slack — sibling repo write only).
+
+**Codex output review:** APPROVED with 5 tightening fixes all applied: (1) tighter URL pattern (host required), (2) issuer-required-for-oauth/jwt conditional, (3) single-line description, (4) bad-slug coverage for member/skills/created_by_agent, (5) cite schema $id from SPEC.md. Bumped negative controls 8 → 21. Codex correctly flagged that the metric proves "valid Draft 2020-12 schema + 10 fixtures pass" but NOT "schema fully machine-checks SPEC v1" — IANA TZ validity, RFC 8785 canonicalization, and body content are out of JSON Schema's expressive range and remain parser-level (now stated explicitly in SPEC.md).
+
+**Gap closed:** A third party can now `pip install jsonschema && python3 -c "import json,jsonschema,yaml,sys; m=yaml.safe_load(open(sys.argv[1]).read().split('---',2)[1]); jsonschema.Draft202012Validator(json.load(open('app.v1.schema.json'))).validate(m)" path/to/APP.md` and either get silence (valid) or a structured error path (invalid). The credibility-blocker for OUTREACH.md is removed: every prospective implementer can build a parser without reading 200 lines of prose.
+
+**Next:** app-T10 — Ship `fixtures/valid/` and `fixtures/invalid/` directories. Today the validator has fixtures inline in the test script; they need to live as committed JSON/YAML files so any conformance-test suite can pick them up. Plan: `fixtures/valid/{minimal,with-secrets,with-schedule,subprocess-with-pipeline,template,web-public,webhook-private}.yaml` (~7 fixtures showing each conformance shape) + `fixtures/invalid/{missing-required,bad-runtime,uppercase-slug,multiline-description,oauth-without-issuer,template-with-binding,private-web-no-auth,monetization-unknown-key}.yaml` with a sibling `expected-error.txt` per file documenting the expected jsonpath that fails. Falsifier: a 30-line conformance-test runner over the fixtures directory exits 0 only when every valid passes + every invalid fails with the documented path.
+
+**Signal:** [TICK_COMPLETE] metric=schema_valid=1,manifests_pass=10/10,negative_controls_reject=21/21

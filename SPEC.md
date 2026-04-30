@@ -10,7 +10,7 @@ An `APP.md` is a markdown file with YAML frontmatter that fully describes an age
 {{ markdown body — instructions for the agent }}
 ```
 
-Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails schema validation. Reference parser: `backend/services/app_folder_service.py:load_from_folder` in `atrislabs/atrisos-backend`.
+Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails schema validation. Reference parser: `backend/services/app_folder_service.py:load_from_folder` in `atrislabs/atrisos-backend`. The frontmatter shape is normatively pinned by [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`, JSON Schema Draft 2020-12). Where prose and schema diverge, prose normative rules in this file are authoritative; the schema is a machine-checkable subset of those rules (some rules — IANA timezone validity, RFC 8785 canonicalization, body content — fall outside JSON Schema's expressive range and live in the parser).
 
 ## Required fields
 

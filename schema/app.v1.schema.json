@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atris.ai/schema/app.v1.schema.json",
+  "title": "APP.md frontmatter — schema_version 1",
+  "description": "Normative JSON Schema for the YAML frontmatter of an APP.md manifest. Pins to schema_version: 1. See https://github.com/atrislabs/app.md/blob/master/SPEC.md.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "name", "slug", "access", "runtime", "vault"],
+
+  "$defs": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https?://[^\\s/$.?#][^\\s]*$"
+    }
+  },
+
+  "properties": {
+    "schema_version": { "const": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "slug": { "$ref": "#/$defs/slug" },
+    "access": { "enum": ["private", "business", "public"] },
+    "runtime": { "enum": ["local", "subprocess", "ec2", "webhook", "external", "web", "ios", "template"] },
+    "vault": { "enum": ["atris-kms", "app_secrets", "byo-aws", "local"] },
+
+    "description": { "type": "string", "pattern": "^[^\\n\\r]*$" },
+
+    "member": { "$ref": "#/$defs/slug" },
+    "skills": { "type": "array", "items": { "$ref": "#/$defs/slug" } },
+    "wiki_paths": { "type": "array", "items": { "type": "string" } },
+    "created_by_agent": { "$ref": "#/$defs/slug" },
+    "artifact_dir": { "type": "string" },
+
+    "secrets": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "schedule": { "type": "string" },
+    "timezone": { "type": "string" },
+    "runtime_auth": { "enum": ["none", "jwt", "api_key"] },
+
+    "surfaces": {
+      "type": "array",
+      "items": { "enum": ["web", "slack", "mcp", "voice", "mobile", "email", "cli"] }
+    },
+    "render": { "enum": ["inline", "embed", "fullscreen", "voice", "none"] },
+    "ui_spec": { "type": ["object", "null"] },
+    "events_schema": { "type": ["object", "null"] },
+
+    "capabilities": { "type": "array", "items": { "type": "string" } },
+
+    "block_pipeline_id": { "$ref": "#/$defs/uuid" },
+
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["none", "api_key", "bearer", "hmac", "oauth", "jwt"] },
+        "issuer": { "$ref": "#/$defs/url" },
+        "secret_ref": { "type": "string" }
+      }
+    },
+
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "api": { "$ref": "#/$defs/url" },
+        "frontend": { "$ref": "#/$defs/url" },
+        "mcp": { "$ref": "#/$defs/url" },
+        "webhook": { "$ref": "#/$defs/url" },
+        "bundle_id": { "type": "string" },
+        "deep_link_scheme": { "type": "string" }
+      }
+    },
+
+    "monetization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "price_credits": { "type": "integer", "minimum": 0 },
+        "creator_share": { "type": "number", "minimum": 0, "maximum": 1 },
+        "stripe_connect_account": { "type": ["string", "null"] }
+      }
+    },
+
+    "spec_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  },
+
+  "allOf": [
+    {
+      "if": { "properties": { "runtime": { "const": "web" } }, "required": ["runtime"] },
+      "then": {
+        "required": ["endpoints"],
+        "properties": { "endpoints": { "required": ["frontend"] } }
+      }
+    },
+    {
+      "if": { "properties": { "runtime": { "const": "webhook" } }, "required": ["runtime"] },
+      "then": {
+        "required": ["endpoints"],
+        "properties": { "endpoints": { "required": ["webhook"] } }
+      }
+    },
+    {
+      "if": { "properties": { "runtime": { "const": "external" } }, "required": ["runtime"] },
+      "then": {
+        "required": ["endpoints"],
+        "properties": { "endpoints": { "required": ["api"] } }
+      }
+    },
+    {
+      "if": { "properties": { "runtime": { "const": "ios" } }, "required": ["runtime"] },
+      "then": {
+        "required": ["endpoints"],
+        "properties": { "endpoints": { "required": ["bundle_id", "deep_link_scheme"] } }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "runtime": { "enum": ["webhook", "external", "web"] },
+          "access": { "enum": ["private", "business"] }
+        },
+        "required": ["runtime", "access"]
+      },
+      "then": {
+        "required": ["auth"],
+        "properties": { "auth": { "required": ["type"] } }
+      }
+    },
+    {
+      "if": { "properties": { "runtime": { "const": "template" } }, "required": ["runtime"] },
+      "then": {
+        "not": { "anyOf": [
+          { "required": ["block_pipeline_id"] },
+          { "required": ["endpoints"] }
+        ] }
+      }
+    },
+    {
+      "if": { "properties": { "runtime": { "const": "local" } }, "required": ["runtime"] },
+      "then": {
+        "not": { "required": ["block_pipeline_id"] }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "runtime": { "enum": ["webhook", "external", "web", "ios"] }
+        },
+        "required": ["runtime"]
+      },
+      "then": {
+        "not": { "required": ["block_pipeline_id"] }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["auth"],
+        "properties": {
+          "auth": {
+            "type": "object",
+            "required": ["type"],
+            "properties": { "type": { "enum": ["oauth", "jwt"] } }
+          }
+        }
+      },
+      "then": {
+        "properties": { "auth": { "required": ["type", "issuer"] } }
+      }
+    }
+  ]
+}
