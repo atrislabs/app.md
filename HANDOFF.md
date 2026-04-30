@@ -567,3 +567,21 @@ The plan-review hook is doing structurally different work than output-review. Bo
 **Next:** same trigger rule. Either Keshav picks, or tick 20 SKIPs and triggers the pause-cron recommendation.
 
 **Signal:** [SKIP_TICK] reason=Keshav-attention-bottleneck (consecutive=2)
+
+---
+
+### Tick 20 — 2026-04-30T05:09Z
+
+**Horizon:** APP.md v1 endgame T14. Unchanged.
+
+**Task:** [SKIP_TICK] per PICK_SHEET trigger rule. **3rd consecutive skip** — threshold from tick 19 hit.
+
+**Metric:** consecutive_skips=3, send_ready_count=2/10 unchanged.
+
+**Recommendation surfaced:** the `/loop` cron is firing every 15min (ID `3c2124c2`, `7,22,37,52 * * * *`) but the upstream bottleneck (Keshav-attention) has not cleared in 45+ minutes. Each SKIP burns prompt-cache budget without producing progress. Recommend `CronDelete 3c2124c2` to pause the loop until Keshav is ready to pick. The pick sheet at `atris/launches/app-md/PICK_SHEET.md` is durable and doesn't expire — re-fire `/loop 15m /forgepilot` after the pick to resume.
+
+I will NOT auto-delete the cron — destructive action per CLAUDE.md safety policy requires explicit confirm.
+
+**Next:** `CronDelete 3c2124c2` requested from Keshav. If cron continues firing without a pick, tick 21+ continues to SKIP cleanly until either Keshav picks or the cron is paused.
+
+**Signal:** [SKIP_TICK] reason=Keshav-attention-bottleneck (consecutive=3, recommend cron pause)
