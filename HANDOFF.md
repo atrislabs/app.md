@@ -343,3 +343,49 @@ Codex correctly flagged that this corpus does NOT prove FULL v1 conformance — 
 **Next:** app-T13 — Write `OUTREACH.md` with target list. Plan: a private-to-Atris file enumerating ~10 candidate runtime/platform companies (Wordware, Lindy, Cognition, agentskills.io, Modal, Replit Agents, Vercel AI SDK, Cloudflare AI Workers, etc.) each with: (a) why they'd care (specific pain APP.md solves for THEIR architecture), (b) the right contact (eng lead, not marketing), (c) a personalized one-liner (NOT a template), (d) the LAUNCH.md link as the "why now" hook. The goal is NOT to ship outreach this tick — the goal is to ship a CURATED list ready for Keshav to review before T14 (which sends ONE notification, with confirm). Falsifier: if any of the 10 entries reads like "I'd send this to anyone," it's wrong; each line must show specific knowledge of their stack.
 
 **Signal:** [TICK_COMPLETE] metric=loc=72,faq_questions=5/5,links_resolve=5/5,fixes_applied=5/5
+
+
+---
+
+## Tick 13 — 2026-04-29 (app-T13: OUTREACH candidate list, 0/10 send-ready)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T13 — Curate ~10 runtime/platform candidates for app-T14 (1 outbound notification, Keshav-confirmed). PRIVATE file at `atrisos-backend/atris/launches/app-md/OUTREACH.md` — NOT pushed to the public spec repo. The point: T14 picks from a curated list with verifiable per-target reasoning, not a spam template.
+
+**Metric:**
+- File `atris/launches/app-md/OUTREACH.md` exists in atrisos-backend (private, internal-only). 193 lines after codex output-review tightening.
+- 10 numbered entries: Modal, CrewAI, LangGraph (LangChain), Wordware, Lindy, Replit Agents, Vercel AI SDK, Cloudflare AI Workers/Agents, Cognition (Devin), agentskills.io.
+- Each entry has 7 structured fields: What they ship + Sources URLs, Why APP.md matters (with "Verified fact" vs "Hypothesis" labels), Right contact, Hook, Anti-pitch, T14 status, Research depth.
+- 9 source URLs cited (modal.com/docs, crewAIInc/crewAI, langchain-ai/langgraph, wordware.ai, docs.lindy.ai, etc.); only agentskills.io is fully unsourced (research depth: none, explicitly skip).
+- 8 "Verified fact" lines + 5 "Hypothesis" labels distinguish verifiable claims from speculation.
+- Deprioritized section (4 rejected: OpenAI GPT Actions, Anthropic Claude Agent SDK, HF Spaces, n8n/Zapier) with one-line reasoning each.
+- Send-tick (T14) checklist + sent.jsonl logging convention.
+- **T14 send-ready count: 0/10** — codex's correct reframe; 9/10 entries need pre-send research, 1/10 (CrewAI, moderate depth) is closest but still needs exact channel + personalized opener.
+
+**BS check:** ran. (a) Swap test on 4 sample hooks (Modal, Replit, Vercel, Cloudflare) — codex confirmed all 4 pass strict no-edit swap test (each names target-specific primitives — "Python stubs" for Modal, "wrangler.toml" for CF, "AI SDK is the inside" for Vercel, etc.). (b) Fabrication audit caught my initial draft's pattern of confident-sounding architectural claims followed by "Source: TBD" — codex correctly held the line: "labeled fake still reads fake." Fixed by relabeling those as "Hypothesis to verify before send" and adding actual source URLs everywhere I could cite. (c) Founder names (João Moura, Harrison Chase, Erik Bernhardsson, Amjad Masad) flagged as routing clues, NOT first channels — first outbound prefers public community/docs/GitHub/support channels. (d) Codex flagged 3 missing seed targets (Mastra, Inkeep, Latent) — added with one-line reasoning each, marked "needs source-backed decision."
+
+**Codex plan review:** APPROVED with 4 corrections all applied: (1) Required `Sources:` line per entry with public URLs (added). (2) Keep all 10 candidates but mark weak ones `Research depth: partial` instead of skipping (8/10 partial, 1 moderate, 1 none). (3) Add "Deprioritized" section for rejected targets (4 entries). (4) Markdown not YAML (chosen).
+
+**Codex output review:** "NOT APPROVED as T14-send-ready. APPROVED only as a private candidate scaffold after tightening." Codex correctly applied 11 in-place fixes:
+1. Header reframe: "candidate list only. T14 send-ready count: 0/10."
+2. Added "Founder names are not channels" guardrail.
+3. Added "Review notes added 2026-04-29" section explaining why metric doesn't prove send-readiness.
+4. Source URLs filled in for verified targets (was TBD-heavy; now URL-backed).
+5. "Verified fact" / "Hypothesis to verify" labels separate known from speculative.
+6. Per-entry "T14 status" line (e.g. "Not send-ready. Need exact parser/schema URL and verified community channel.").
+7. Founder names downgraded to routing clues throughout.
+8. 3 missing seed targets surfaced (Mastra, Inkeep, Latent).
+9. Send checklist tightened with step-0 ("if no entry has T14 status cleared, T14 is a research tick, not a send tick").
+10. Sample-hook swap-test verdict added inline.
+11. MAP.md indexed the new private file; daily journal got a tick-13 entry.
+
+The verdict — "0/10 send-ready" — is the honest claim. My initial framing ("ready for Keshav to pick from") overstated readiness; the corrected framing ("candidate scaffold; 0/10 cleared the send-ready gates") matches reality. This is the same anti-slop discipline that killed the labeled-fake customer quote in tick 12.
+
+**Gap closed:** T14 now has a real bridge: when Keshav picks a target, the OUTREACH.md entry tells us exactly what additional research closes the gap (verify source URL, find the right community channel, draft a personalized opener). Without this file, T14 = "guess who to send to." With it, T14 = "promote candidate N from research-depth=partial to send-ready by clearing 4 specific gates, then send with confirm." The candidate-list framing also makes the 7-day response tracking real (sent.jsonl + research-depth update).
+
+**Next:** app-T14 — Send 1 outbound notification. Mandatory blockers before fire: (a) Keshav picks 1 candidate from OUTREACH.md, (b) the picked candidate's "T14 status" gates are all cleared (verified Sources URL, verified contact channel, exact personalized message draft, live public LAUNCH.md link), (c) Keshav reviews the exact message and confirms send. Per the safety policy and prior memory feedback ("Frame-mog not jester-max", "Quiet confidence of victory"), the send is operator-grade — no scarcity tricks, no performative gifts, no "hey are you free for a chat." The send STATES the position, links the LAUNCH, names a concrete next step, and lets the recipient come.
+
+If Keshav doesn't pick a target this cycle, T14 becomes a research tick (clear send-ready gates on 1-2 entries) instead of a send tick. That's per the codex-tightened send-checklist step 0.
+
+**Signal:** [TICK_COMPLETE] metric=entries=10/10,sources_cited=9/10,send_ready=0/10,fixes_applied=11/11
