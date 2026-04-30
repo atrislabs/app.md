@@ -54,3 +54,25 @@
 **Next:** app-T2 — Define execution binding for `local` and `template` runtimes. SPEC.md has bindings for subprocess/ec2/webhook/external/web/ios but `local` (commit-digest example) and `template` (3 templates) are silent. Local likely wants `entrypoint:` (shell command) or `script:` (relative path). Template should be explicit "no execution binding required, fork-only".
 
 **Signal:** [TICK_COMPLETE] metric=spec_field_description_defined=1
+
+---
+
+## Tick 2 — 2026-04-29 (app-T2: bindings for local + template)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T2 — Define execution binding for `local` and `template` runtimes (previously silent).
+
+**Metric:** SPEC.md execution-binding section now covers all 8 runtime enum values. Added: 1 table row (`_none_` for local + template), 1 normative validator sentence, 1 `### No-binding runtimes` subsection with per-runtime rules. commit-digest (only `local` example, zero binding fields) now conforms; rule for `template` is forward-looking (no `runtime: template` manifests in repo today).
+
+**BS check:** ran. grep verified table row, validator sentence, and subsection heading each appear once. Confirmed commit-digest still validates (no binding fields = legal). Confirmed no `runtime: template` manifest exists, so rule cannot break anything that ships today.
+
+**Codex plan review:** APPROVED with three tweaks: (a) add explicit table row for local/template instead of hiding them in prose only, (b) defer `entrypoint:` without naming v2 ("a future schema version may add deterministic local entrypoints"), (c) prep app-T7 by adding "validators MUST reject required bindings on wrong runtimes and executable bindings on template." All three applied.
+
+**Codex output review:** APPROVED with one MUST-stronger fix on template wording. Applied: "no execution binding permitted" → "runtime: template MUST NOT include any execution-binding field (block_pipeline_id, any endpoints.*, etc.)". Codex flagged "optional-binding runtimes" as a future-category gap; not closing tonight, will revisit if a real example emerges.
+
+**Gap closed:** 2 of 8 codex punch-list issues now resolved (T1 description, T2 local+template binding). Spec is closer to internally consistent. JSON Schema work in app-T9 has a clean translation target: `if runtime in {local, template}, no binding fields permitted; on template, executable bindings explicitly disallowed (encode via not/anyOf).`
+
+**Next:** app-T3 — Decide and lock timezone policy for `schedule:`. SPEC.md says UTC. Examples (commit-digest "0 18 * * 1-5", daily-standup "0 7 * * *", etc.) are described in plain English referencing LA times in their bodies but use UTC-style cron. Need to either (a) lock to UTC + rewrite example bodies, or (b) add optional `timezone:` IANA field with default UTC. Pick (b) — adding an optional field is safer and matches how real cron systems work. Falsifier: if any cron expression in examples is currently mis-aligned (i.e. body says "7am LA" but cron is "0 7 * * *" UTC = midnight LA), that's a real bug to fix during the same edit.
+
+**Signal:** [TICK_COMPLETE] metric=spec_runtime_binding_coverage=8/8

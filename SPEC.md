@@ -44,7 +44,7 @@ Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails 
 
 ## Execution binding
 
-Exactly one of these tells the runtime how to actually execute. The required shape depends on `runtime`.
+Exactly one of these tells the runtime how to actually execute. The required shape depends on `runtime`. Two runtimes (`local`, `template`) are deliberately bindingless — see the [No-binding runtimes](#no-binding-runtimes) section after the table.
 
 | Field | Type | Required for | Notes |
 |---|---|---|---|
@@ -59,6 +59,14 @@ Exactly one of these tells the runtime how to actually execute. The required sha
 | `auth.issuer` | URL | when `auth.type=oauth` / `jwt` | OIDC issuer |
 | `auth.secret_ref` | string | when auth needs a key | Vault secret name |
 | `capabilities` | list[string] | optional | Free-form labels for routers |
+| _none_ | — | `local`, `template` | No execution-binding field is required or permitted; see below |
+
+Validators MUST reject manifests that omit a required binding for their declared runtime, AND reject any executable binding (`block_pipeline_id`, `endpoints.*`) on `runtime: template`.
+
+### No-binding runtimes
+
+- `local`: no execution-binding field is required. The markdown body of APP.md is treated as the agent system prompt; the runtime spawns an LLM subprocess on the customer's machine with shell access (the "agent + shell" model). Apps that need a deterministic local script are out of scope for v1; a future schema version may add deterministic local entrypoints.
+- `template`: a manifest with `runtime: template` MUST NOT include any execution-binding field (`block_pipeline_id`, any `endpoints.*`, etc.). A template is a starting point to fork into a runnable app; the runtime cannot execute it directly. Forking flips `runtime` to `subprocess` / `ec2` / `web` / etc. and adds the appropriate binding field.
 
 ## Resources
 
