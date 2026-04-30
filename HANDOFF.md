@@ -458,3 +458,39 @@ This proves the swap-test discipline (codex's tick-14 contribution) catches forc
 If Keshav approves CrewAI or Modal next message, T14 fires immediately.
 
 **Signal:** [TICK_COMPLETE] metric=gates_cleared=4/4,send_ready_count=2/10,draft_word_count=90,codex_swap_test=PASS,output_review_iterations=2
+
+---
+
+### Tick 16 — 2026-04-30T04:22Z
+
+**Horizon:** APP.md v1 endgame T14 (send 1 outbound notification). Tick-15 explicit guidance: "stop at one backup; more candidates before one send becomes busywork." So this tick = research-depth hygiene on partial candidates, NOT a 3rd send-ready promotion.
+
+**Task:** Upgrade 2 partial candidates (LangGraph #3, Cloudflare AI Workers/Agents #8) from `Research depth: partial` → `Research depth: moderate` by clearing G1 (source hygiene) and G2 (verified official public channel) only. Explicit non-goals: no G3 anchor hunt, no G4 draft, no personalized opener, no outbound draft.
+
+**Metric:** candidates_upgraded=2/2, send_ready_count=2/10 (unchanged), research_depth_distribution=4_moderate/5_partial/1_none, channels_verified=2 (LangGraph forum + Cloudflare Discord/community), output_review_iterations=2 (NEEDS-FIX → second NEEDS-FIX → APPROVE-equivalent after `moderate-plus` self-contradiction removed).
+
+**BS check:**
+- LangGraph G2 verified: `forum.langchain.com/c/oss-product-help-lc-and-lg/langgraph/13` confirmed via WebFetch as official "OSS Product Help > LangGraph" category. Active April 29-30, 2026 (deployment, multi-agent threads). Founder Harrison Chase downgraded to routing clue.
+- Cloudflare G2 verified: `discord.com/invite/cloudflaredev` linked from Cloudflare's own blog post `blog.cloudflare.com/meet-the-workers-team-over-discord`; `community.cloudflare.com` is the official forum. Codex independently re-verified both via WebSearch and forum guidelines page. Founders/execs explicitly downgraded.
+- Discipline cap held: NO G4 draft block added to either entry (verified by codex grep), NO G3 anchor hunt, T14 status sentences are 1 line each naming remaining gates compactly.
+- Header/file-content count consistency: 4 moderate / 5 partial / 1 none — verified by `awk` over the 10 entries (codex independently re-counted).
+- Honesty under failure: had any channel been impostor/unofficial/inactive, plan was to leave at `partial` (cheapest falsifier). No null result needed; both verified.
+
+**Codex plan review:** "Approve with corrections" — required `moderate = G1/G2 only` discipline cap (max one compact sentence per remaining gate), forbade G3/G4 work sneaking in via `moderate` labeling. All corrections applied to the build.
+
+**Codex output review (3 iterations):**
+- v1: NEEDS FIX — 2 fails: Discipline cap (Cloudflare T14-status leaked "Agents Week 2026 may qualify if confirmed within window" = G3 hunting), Moderate clarity (header counts 4/4/1 didn't sum to 10; should be 4/5/1; uncited "89k+ members" + "AI Agents category active" claims).
+- v2: NEEDS FIX (after first round of fixes) — 1 new self-contradiction: header said send-ready = "moderate-plus" but CrewAI entry line 61 said "not yet moderate-plus." Same word, two opposite truths.
+- v3: APPROVE-equivalent — removed `moderate-plus` from header entirely, replaced with cleaner "Send-ready is a separate axis from research-depth" framing. CrewAI's forward-looking moderate-plus note about future contact/response measurement now stands without contradiction.
+
+**Gap closed:** OUTREACH.md is now LangGraph-and-Cloudflare-redirect-ready. If Keshav says "skip CrewAI/Modal, pitch LangGraph or Cloudflare instead," next forgepilot tick can promote that candidate from `moderate` → `send-ready-pending-approval` in one step (just G3 anchor hunt + G4 draft + codex output review). Without this tick, that pivot would have started from `partial` requiring full source verification + channel discovery first.
+
+The "discipline cap" pattern (codex enforced `moderate = G1/G2 only`, no G3/G4 work) is now a proven backstop against label drift. v1 reject caught a literal G3 leak ("Agents Week may qualify"); v2 reject caught a self-contradiction across two file locations using the same word. Both would have shipped silently without 2-LLM independent review — neither was caught by self-BS-check.
+
+**Pattern emerging across ticks 14-16:** the codex output-review *first pass* fails on every send-tick / promotion / hygiene tick. Tick 14 = single approve. Tick 15 = REJECT then APPROVE_WITH_NOTES. Tick 16 = NEEDS-FIX then NEEDS-FIX then APPROVE. The first-pass-fail rate is 2/3. This is the 2-LLM honesty mechanism doing its job — it's not noise. Worth flagging as a forgepilot lesson.
+
+**Next:** Either (a) Keshav approves CrewAI/Modal/LangGraph/Cloudflare + confirms send → T14 fires + endgame met, or (b) tick 17 = upgrade 2 more partial candidates (likely Replit Agents #6 and Vercel AI SDK #7, both with cited Sources URLs + just need channel verification) using the same `moderate = G1/G2 only` discipline. Per tick-15 "stop at one backup" guidance, this remains research-depth hygiene only — no further send-ready promotions until a send fires.
+
+If 4+ candidates are at `moderate` and Keshav still hasn't picked, the bottleneck is Keshav-attention not candidate-readiness. Tick 17+ should consider whether continuing the upgrade pass is busywork at that point. Honest read for now: at 4 moderate, the marginal value of upgrading #6 and #7 is real (different product fits) but diminishing. Stop at 6 moderate.
+
+**Signal:** [TICK_COMPLETE] metric=candidates_upgraded=2/2,send_ready_count=2/10,research_depth_distribution=4mod/5par/1none,output_review_iterations=3
