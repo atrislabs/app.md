@@ -494,3 +494,44 @@ The "discipline cap" pattern (codex enforced `moderate = G1/G2 only`, no G3/G4 w
 If 4+ candidates are at `moderate` and Keshav still hasn't picked, the bottleneck is Keshav-attention not candidate-readiness. Tick 17+ should consider whether continuing the upgrade pass is busywork at that point. Honest read for now: at 4 moderate, the marginal value of upgrading #6 and #7 is real (different product fits) but diminishing. Stop at 6 moderate.
 
 **Signal:** [TICK_COMPLETE] metric=candidates_upgraded=2/2,send_ready_count=2/10,research_depth_distribution=4mod/5par/1none,output_review_iterations=3
+
+---
+
+### Tick 17 — 2026-04-30T04:32Z
+
+**Horizon:** APP.md v1 endgame T14 (send 1 outbound notification). Bottleneck has shifted from candidate-readiness (4 moderate, 2 send-ready as of tick 16) to Keshav-attention.
+
+**Task:** Originally planned: upgrade Replit Agents #6 + Vercel AI SDK #7 from partial → moderate (final budgeted upgrade pass per tick-16 plan). **Codex plan-review pivoted the tick** to instead build a 1-screen decision aid (PICK_SHEET.md) for the existing 4 moderates — on the grounds that more candidates against a Keshav-attention bottleneck IS the busywork tick-15+16 warned about. I would have rationalized "one more last upgrade" without the 2-LLM check.
+
+**Metric:** pick_sheet_built=1, decision_columns=7 (#, candidate, channel, why-care, ask, risk, send-ready, recommended-first), rows=4 (CrewAI, Modal, LangGraph, Cloudflare), 1-screen=true (48 lines/657 words; table is the focus), trigger_rule_binding=IF/IF/IF block + hard-rule no-more-upgrades, send_ready_count=2/10 unchanged, output_review_iterations=2 (NEEDS-FIX → APPROVE-equivalent after 2 wording-only fixes).
+
+**BS check:**
+- Decision surface fitness: codex confirms "pickable in 30s despite dense rows."
+- Honest hedging: Modal "Conditional" recommendation (not Y or N) is honest per codex — strong-fit-if-Lovable/Ramp-pattern-resonates, weaker otherwise.
+- Trigger rule binds: IF pick sheet absent → build (done) / IF pick made → fire / IF sheet exists AND no pick → SKIP_TICK reason=Keshav-attention-bottleneck. Hard rule explicit: no further OUTREACH research-depth upgrades until either send fires OR Keshav explicitly asks for new candidate.
+- Risk column candor: codex confirms each row's risk is candid not sandbagged (CrewAI may not want a wrapper; Modal code-first scope-creep risk; LangChain own-stack incentive; CF DX large/owner unknown).
+- Send-ready ≠ recommended distinction: 2 columns separate. Modal is send-ready ✅ but Conditional. CrewAI is send-ready ✅ AND Y. LangGraph + Cloudflare are ❌ (moderate only, G3+G4 not done).
+- Public artifact links verified by codex via GitHub API: SPEC, LAUNCH, README, validator, schema, fixtures all resolve at github.com/atrislabs/app.md.
+
+**Codex plan review:** "VERDICT: pivot-to-decision-aid." Specifically rejected my "upgrade Replit + Vercel" plan with: "One more upgrade overrides the tick-16 warning... SKIP is too passive before a pick sheet exists... Cap only binds if tick 18 explicitly bans research upgrades... Trigger must be: pick sheet absent → build; pick made → send; sheet exists and no pick → SKIP." Codex specified the exact columns. The plan I executed is the codex-prescribed plan, not my original.
+
+**Codex output review:** v1 NEEDS FIX — 2 wording leaks: (a) CrewAI line still negated "moderate-plus" (just removing the word; codex's tick-16 fix didn't fully clear it), (b) PICK_SHEET stale OUTREACH line refs (I wrote "line 52" / "line 38" but the OUTREACH header edit shifted those). Both fixed: CrewAI line now reads "moderate. (No contact made, no response measured)"; PICK_SHEET refs are section-titles only, no line numbers. v2 implicit APPROVE (the 6 prior PASS checks were untouched by the fixes).
+
+**Gap closed:** Pre-tick: a smart reader looking at OUTREACH.md (193 lines, 10 candidates, 4 moderate, varying send-ready states) had to read 5+ minutes to know what to pick. Post-tick: PICK_SHEET.md has 4 rows + 7 decision columns + a single-sentence pick syntax ("send row 1" / "redirect to row 3"). 30-second decision surface.
+
+The pivot itself is the meta-gap-close: forgepilot's 2-LLM honesty mechanism caught a busywork tick at the door for the first time. Ticks 14-16 caught fake claims (labeled-fake quote in tick 12, swap-test fail in tick 15, count-math in tick 16); tick 17 caught a wrong-task-entirely. Different failure mode, same mechanism.
+
+**Pattern: 2-LLM review is now multi-mode.**
+- Tick 14: codex caught content-level slop (labeled fake quote).
+- Tick 15: codex caught draft-level swap-test fail (generic boundary pattern).
+- Tick 16: codex caught hygiene-level inconsistency (count math, self-contradiction across file).
+- Tick 17: codex caught **task-selection-level** error (wrong tick entirely; busywork against shifted bottleneck).
+
+The plan-review hook is doing structurally different work than output-review. Both layers compound. Worth flagging as a forgepilot lesson — the plan-review's value is highest when the AGENT is most likely to do the wrong thing, which is exactly when I would have skipped it for "obvious continuation."
+
+**Next:** Per the trigger rule baked into PICK_SHEET.md:
+- IF Keshav signals "send row 1" / "send row 2" → next message starts the send flow with final word-level edit pass.
+- IF Keshav signals "redirect to row 3" or "row 4" → next forgepilot tick promotes that candidate from moderate → send-ready (G3 + G4 work, then back to PICK_SHEET).
+- IF tick 18 fires before Keshav response → SKIP_TICK with reason=Keshav-attention-bottleneck. No new upgrades. The sheet exists; the bottleneck is upstream.
+
+**Signal:** [TICK_COMPLETE] metric=pick_sheet_built=1,rows=4,trigger_rule=binding,send_ready_count=2/10,plan_pivot_caught_busywork=1
