@@ -70,12 +70,19 @@ $EDITOR my-standup/APP.md
 # That's it. Hand the folder to any APP.md-aware runtime.
 ```
 
-If you have the Atris reference runtime:
+To validate or run the manifest, use the reference runtime in [`atrislabs/atrisos-backend`](https://github.com/atrislabs/atrisos-backend):
 
 ```bash
-python -m scripts.apps_cli validate my-standup    # parse + lint
-python -m scripts.apps_cli run my-standup         # subprocess execution
+git clone https://github.com/atrislabs/atrisos-backend.git
+cd atrisos-backend/backend
+python3 -m venv .venv && source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+
+python3 -m scripts.apps_cli validate /path/to/my-standup   # parse + lint
+python3 -m scripts.apps_cli run      /path/to/my-standup   # execute (local / subprocess)
 ```
+
+The folder path can be absolute or relative — the CLI resolves it. The commands above use Atris as the reference runtime; APP.md itself is runtime-agnostic, see [SPEC.md](./SPEC.md).
 
 ## Examples
 

@@ -186,3 +186,26 @@
 **Next:** app-T8 — Resolve README/CLI mismatch. README says `python -m scripts.apps_cli validate my-standup` but no `scripts/` directory exists in the app.md repo (the CLI lives in atrisos-backend). Three options codex flagged: (a) remove the references, (b) ship a tiny `scripts/apps_cli.py` in this repo, (c) make README explicit that the CLI lives in atrisos-backend. Best choice: probably (c) for honesty + maybe a minimal validator stub for app-T11. Don't pre-empt the validator work though — keep this tick to the README fix.
 
 **Signal:** [TICK_COMPLETE] metric=slug_regex_pinned=1,manifests_pass=10/10,negative_controls_reject=9/9
+
+
+---
+
+## Tick 8 — 2026-04-29 (app-T8: README/CLI mismatch resolved)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T8 — Resolve README/CLI mismatch. README quickstart (lines 75-78) said `python -m scripts.apps_cli validate my-standup` but no `scripts/` directory exists in the app.md repo (the CLI lives in atrisos-backend/backend/scripts/apps_cli.py). Anyone copy-pasting from the public repo got `No module named scripts`.
+
+**Metric:** Stale `python -m scripts.apps_cli` references in README: 1 → 0 (2 instances replaced). Working `python3 -m scripts.apps_cli` invocations now point at the correct working directory (`atrisos-backend/backend/`) with venv + pip install steps. Live smoke test (running the README's exact command path with venv active): `valid=True` for examples/burn-rate, examples/atris-revenue, examples/commit-digest. Three of seven public examples roundtrip to canonical JSON via the documented command. Quickstart is now copy-pasteable.
+
+**BS check:** ran. (a) Read the actual `apps_cli.py` source — its docstring confirms `python -m scripts.apps_cli ...` invocation (run from `backend/`), not `python -m backend.scripts.apps_cli ...` as the first plan draft proposed. Codex caught this in plan review. (b) Live execution from `atrisos-backend/backend/` with venv active produced `valid=True` JSON output for all three tested examples. (c) `run` comment originally said "subprocess execution" but the CLI supports both `local` and `subprocess` runtimes (per `_CLI_SUPPORTED_RUNTIMES`); fixed comment to "execute (local / subprocess)" to avoid misleading readers with `runtime: local` manifests like commit-digest. (d) Verified CLI resolves both relative and absolute paths.
+
+**Codex plan review:** APPROVED option C with one correction: the proposed module path `python -m backend.scripts.apps_cli` was wrong — the CLI's own usage docstring imports as `scripts.apps_cli` (run from `backend/`). Applied codex's corrected snippet. Also confirmed: option (b) (ship a stub CLI in app.md repo) creates a maintenance fork; option (a) (just delete the snippet) loses real signal. Option (c) is the honest fix.
+
+**Codex output review:** APPROVED with three normative fixes: (a) add `python3 -m venv .venv && source .venv/bin/activate` before pip install (cargo-cult installs into system python is the #1 bug on first contact); (b) note that the path can be relative or absolute (CLI resolves it) instead of forcing absolute; (c) sharpen the "other runtimes" line to "The commands above use Atris as the reference runtime; APP.md itself is runtime-agnostic." All three applied. Also flagged the misleading `# subprocess execution` comment, addressed in BS check (c).
+
+**Gap closed:** 8 of 8 codex punch-list issues. The keystone for v1 credibility is in place: a stranger cloning github.com/atrislabs/app.md can copy-paste the quickstart and get a working `valid=True` JSON output in under 60 seconds. No more "module not found" first-contact failure. The spec is now fit for OUTREACH.md's target list.
+
+**Next:** Phase pivot. All 8 punch-list items closed → spec hardening + distribution. Next tick = app-T9: publish normative JSON Schema at `schema/app.schema.json` derived from SPEC.md (root `additionalProperties: true` + closed sub-schemas with `additionalProperties: false` for secrets/auth/endpoints.*/monetization + `pattern: ^[a-z][a-z0-9]*(-[a-z0-9]+)*$` for slug/member/skills[]/created_by_agent + per-runtime conditional rules). Falsifier: validate all 7 public examples + 4 templates against the schema; expect 11/11 pass. After T9: T10 (fixtures/valid|invalid/), T11 (50-line reference validator), T12 (LAUNCH.md), T13 (OUTREACH.md), T14 (1 outbound notification — REQUIRES Keshav confirm).
+
+**Signal:** [TICK_COMPLETE] metric=cli_quickstart_works_end_to_end=3/3,stale_refs_in_readme=0/0
