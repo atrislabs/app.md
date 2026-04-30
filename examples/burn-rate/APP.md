@@ -14,6 +14,7 @@ secrets:
   - STRIPE_KEY
   - SLACK_BOT_TOKEN
 schedule: "0 8 * * *"
+timezone: America/Los_Angeles
 member: treasury
 skills:
   - ramp

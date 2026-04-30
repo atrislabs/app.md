@@ -76,3 +76,25 @@
 **Next:** app-T3 — Decide and lock timezone policy for `schedule:`. SPEC.md says UTC. Examples (commit-digest "0 18 * * 1-5", daily-standup "0 7 * * *", etc.) are described in plain English referencing LA times in their bodies but use UTC-style cron. Need to either (a) lock to UTC + rewrite example bodies, or (b) add optional `timezone:` IANA field with default UTC. Pick (b) — adding an optional field is safer and matches how real cron systems work. Falsifier: if any cron expression in examples is currently mis-aligned (i.e. body says "7am LA" but cron is "0 7 * * *" UTC = midnight LA), that's a real bug to fix during the same edit.
 
 **Signal:** [TICK_COMPLETE] metric=spec_runtime_binding_coverage=8/8
+
+---
+
+## Tick 3 — 2026-04-29 (app-T3: timezone policy + real bug fix)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T3 — Decide and lock timezone policy for `schedule:`. Picked option (b): add optional `timezone:` IANA field with default UTC for ALL runtimes.
+
+**Metric:** SPEC.md `timezone` mention count 0 → 6 (table row + intro line + DST handling + IANA validation rule + parser-allowance note + body line). 1 real bug fixed: examples/burn-rate/APP.md body says "Runs every morning at 08:00 America/Los_Angeles" but cron `0 8 * * *` under spec UTC default = midnight LA. Added `timezone: America/Los_Angeles` so cron actually fires when body claims it does.
+
+**BS check:** ran. grep verified all SPEC.md additions. burn-rate frontmatter now has both `schedule:` and `timezone:`. 6/7 schedule-using manifests left default UTC (correct — body intent is ambiguous in the others; not invented intent).
+
+**Codex plan review:** APPROVED with one major correction: default UTC for ALL runtimes including `local` (machine-local default would be a CI/dev/prod drift footgun). Applied. Codex also flagged DST handling as essential, parser-allowlist reconciliation as needed (see app-T7), and "do not touch ambiguous examples" (correct boundary).
+
+**Codex output review:** APPROVED with two tightening fixes: (a) soften DST event names — runtimes-defined, not spec-defined ("SHOULD log the skip/fold"); (b) add invalid-IANA validation rule. Applied both. Codex confirmed app-T7 still needed to fully reconcile fail-closed.
+
+**Gap closed:** 3 of 8 codex punch-list issues. SPEC.md now has a coherent timezone story (default UTC, IANA override, DST semantics, validation rule). Real bug shipped: 1 example was 8 hours off its body claim. JSON Schema work in app-T9 inherits a clear contract.
+
+**Next:** app-T7 — Reconcile fail-closed rule (#4) with version-bump policy. Currently they self-contradict: rule #4 says reject any unknown frontmatter field; spec evolution says new optional fields don't bump version (so old parsers see "unknown" and reject). Two-tick chain: define a "reserved word allowlist" or scope fail-closed to required-unknown only. This is the keystone of forward-compatible spec evolution. Falsifier check: does any other field besides timezone hit this same rock? (`description` from app-T1 had the same issue; `_none_` table row from app-T2 doesn't introduce a new field.) Both v1-introduced; both need the same reconciliation.
+
+**Signal:** [TICK_COMPLETE] metric=spec_timezone_field_defined=1,bugs_fixed=1

@@ -73,8 +73,19 @@ Validators MUST reject manifests that omit a required binding for their declared
 | Field | Type | Notes |
 |---|---|---|
 | `secrets` | list[string] | Names only — values resolve from `vault` at run time |
-| `schedule` | cron string | Optional. UTC. `"0 7 * * *"` = 07:00 daily |
+| `schedule` | cron string | Optional. Standard 5-field cron. Default TZ is UTC; override with `timezone:` below. `"0 7 * * *"` = 07:00 daily in the resolved TZ. |
+| `timezone` | IANA TZ string | Optional. e.g. `America/Los_Angeles`, `Europe/London`. Default `UTC` for every runtime (including `local`). When set, `schedule` is interpreted in this TZ. |
 | `runtime_auth` | enum | How Atris authenticates the runtime *back* to itself: `none` \| `jwt` \| `api_key`. Default `jwt` |
+
+### Schedule + timezone
+
+- Cron expressions are standard 5-field (`min hour dom mon dow`). Optional fields like seconds or year are not part of v1.
+- Default TZ for every runtime is **UTC**. Customer-machine local time is NOT a default — leaving `timezone` unset on `runtime: local` still means UTC, to keep behavior identical across CI / dev / prod and stop the "works on my laptop, fires at 3am in CI" footgun. Apps that want customer-local firing MUST declare `timezone:` explicitly.
+- DST handling (when `timezone:` resolves to a TZ that observes DST):
+  - **Nonexistent local times** (e.g. `02:30` on the spring-forward morning) MUST be skipped. The runtime SHOULD log the skip for observability; specific event names are runtime-defined.
+  - **Repeated local times** (e.g. `01:30` on the fall-back morning) MUST fire **once**, not twice. The runtime SHOULD log the fold for observability.
+- `timezone:` MUST be a value parsable by the IANA Time Zone Database (the runtime's `tzdata` source). Validators MUST reject manifests with an `Etc/GMT±N` style fixed offset that does not exist, or any free-form string that is not a valid IANA zone. Empty or missing → defaults to UTC (no error).
+- `timezone:` was introduced in `schema_version: 1`. v1 parsers MUST allow it; failing-closed on it is a parser bug, not a manifest bug.
 
 ## Inheritance (optional)
 
