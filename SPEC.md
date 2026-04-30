@@ -48,7 +48,7 @@ Exactly one of these tells the runtime how to actually execute. The required sha
 
 | Field | Type | Required for | Notes |
 |---|---|---|---|
-| `block_pipeline_id` | uuid | `subprocess`, `ec2` | The compiled pipeline to invoke |
+| `block_pipeline_id` | uuid | optional, `subprocess` and `ec2` only | If absent, the runtime treats the manifest body + member + skills + secrets + remaining manifest context (`wiki_paths`, `schedule`, `surfaces`, etc.) as an **implicit pipeline**. Set explicitly to point at a compiled, version-pinned pipeline. Implementer rule: omitted ⇒ implicit; present ⇒ non-null UUID. Explicit `null` is rejected by [Rule 4b](#fail-closed-scope) ("known-but-misused"). |
 | `endpoints.api` | URL | `external`, optional for `webhook` / `web` | Primary HTTP API |
 | `endpoints.frontend` | URL | `web` | Where users see the UI |
 | `endpoints.mcp` | URL | optional | MCP server URL |

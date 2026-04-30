@@ -8,7 +8,6 @@ runtime: ec2
 vault: atris-kms
 runtime_auth: jwt
 
-block_pipeline_id: null
 capabilities:
   - pull_stripe_charges
   - pull_stripe_subscriptions

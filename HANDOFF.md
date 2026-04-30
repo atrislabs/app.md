@@ -142,3 +142,25 @@
 **Next:** app-T4 — Make `block_pipeline_id` optional or remove the required-for-ec2 claim. Codex flagged that 5 examples either omit it or set null, but spec says required for `subprocess` and `ec2`. Falsifier: grep examples to see actual usage. Likely fix: change "Required for subprocess, ec2" to something like "Required for subprocess; optional for ec2 (when execution is implicit via member/skills inheritance)". Need to inspect first.
 
 **Signal:** [TICK_COMPLETE] metric=spec_digest_canonical_defined=1,test_vector_reproducible=true
+
+---
+
+## Tick 6 — 2026-04-29 (app-T4: block_pipeline_id reconciled)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T4 — Reconcile `block_pipeline_id` "required for subprocess, ec2" claim with reality (0 of 6 such examples populate it).
+
+**Metric:** Spec compliance for subprocess+ec2 manifests: 0/6 → 6/6. SPEC.md row updated to "optional, subprocess and ec2 only" with explicit implicit-pipeline default ("body + member + skills + secrets + manifest context"). Cosmetic `block_pipeline_id: null` removed from atris-revenue (was the only manifest with explicit null; now canonical absence). Implementer rule added: omitted ⇒ implicit, present ⇒ non-null UUID. Explicit null rejected by Rule 4b.
+
+**BS check:** ran. Audited every subprocess/ec2 manifest (6 total). All 6 now absent block_pipeline_id (the new canonical "implicit pipeline" representation). atris-revenue's null line gone. Rule 4b cross-reference visible in SPEC.md.
+
+**Codex plan review:** APPROVED. Confirmed keeping `subprocess, ec2` in the row (don't broaden without auditing); confirmed removing null absolutely (omit/null/UUID would be three states); confirmed implicit-pipeline definition includes "manifest context" to cover wiki_paths/schedule/surfaces without listing every field; confirmed no separate freezing concept needed.
+
+**Codex output review:** APPROVED with two normative fixes: (a) cite Rule 4b explicitly so "null is not legal" is normative, not implied; (b) add implementer line "omitted ⇒ implicit; present ⇒ non-null UUID". Both applied.
+
+**Gap closed:** 6 of 8 codex punch-list issues. The fictional "required" was the deepest spec-vs-reality gap; closing it makes the spec honestly describe how every existing manifest already works. JSON Schema work in app-T9 now has clean rules: `block_pipeline_id` optional + uuid format + non-null + only on `runtime in [subprocess, ec2]`.
+
+**Next:** app-T5 — Tighten `slug` grammar in SPEC.md. Currently "Lowercase, no spaces" — underspecified. Codex flagged this. Likely fix: add regex `^[a-z][a-z0-9-]*$` to Validation Rules and to the slug row in the Required-fields table. Falsifier: grep all 10 manifest slugs to confirm they match the proposed regex; if any don't (e.g. starts with digit, has underscore), spec must accommodate or examples must change.
+
+**Signal:** [TICK_COMPLETE] metric=block_pipeline_id_compliance=6/6
