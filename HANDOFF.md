@@ -120,3 +120,25 @@
 **Next:** app-T6 — Define `spec_digest` canonicalization. Currently SPEC.md says "SHA-256 of the canonicalized record" without defining canonicalization. Codex flagged this in tick 4 output review as the open risk: if preserved-unknown fields participate in the digest, every parser computes a different hash; if they don't, the digest doesn't reflect the manifest's actual content. Need to specify: (a) JSON serialization (sorted keys, no whitespace, UTF-8), (b) which fields are excluded from the digest (likely none — preserve = participate), (c) handling of float ordering / null fields. Falsifier: pick one example, hand-compute a digest, see if SPEC.md prescribes a unique answer.
 
 **Signal:** [TICK_COMPLETE] metric=fail_closed_rules_split=3
+
+---
+
+## Tick 5 — 2026-04-29 (app-T6: spec_digest canonicalization)
+
+**Horizon:** APP.md becomes a real public standard.
+
+**Task:** app-T6 — Define `spec_digest` canonicalization. Was 1 line ("SHA-256 of the canonicalized record") with "canonicalized" undefined; two parsers would compute different digests. This was flagged as the open risk in tick 4 output review (preserved-unknown fields' digest behavior).
+
+**Metric:** SPEC.md has new `## Canonicalization` section: source (frontmatter only, body excluded), pre-canonicalization rejects (duplicate keys, YAML tags/anchors/aliases, non-JSON scalars, NaN/Infinity, unsupported schema_version), no Unicode normalization rule, RFC 8785 (JCS) JSON form, top-level spec_digest excluded if present, Rule 4c-preserved unknowns DO participate, worked example with computed digest `eb9beb40790eeab0329641e230043e058e5819dfb5d526e81e7997af35b978a3` reproducible from python3 stdlib.
+
+**BS check:** ran. python3 stdlib (`json.dumps(sort_keys=True, separators=(",",":"), ensure_ascii=False)` + hashlib.sha256) computed the same digest as written in SPEC.md byte-for-byte. Reproducible from any RFC 8785 implementation. Conformance test exists.
+
+**Codex plan review:** APPROVED. Confirmed JCS over `json.dumps(sort_keys=True)` (the latter doesn't lock down Unicode escaping or float rendering). Confirmed pre-canonicalization rejects for duplicate keys, YAML anchors/tags/aliases, NaN, Infinity. Confirmed body-exclusion and self-exclusion of top-level spec_digest. Suggested: cite RFC 8785 generically; not normalizing Unicode is correct.
+
+**Codex output review:** APPROVED with two tightening fixes: (a) drop unvetted JCS library citations (canonicaljson is for Matrix, not vetted as APP.md cite); cite RFC 8785 + behavior only. (b) Add explicit "schema_version validated before digesting" + "YAML null spellings normalize through parsing" lines. Both applied.
+
+**Gap closed:** 5 of 8 codex punch-list issues. The risk codex flagged in tick 4 (preserved-unknown digest behavior) is now explicitly handled — unknowns participate, no recursion via self-exclusion, byte-for-byte string handling. JSON Schema work in app-T9 is fully unblocked: schema validates shape/types; canonicalization/digest is downstream.
+
+**Next:** app-T4 — Make `block_pipeline_id` optional or remove the required-for-ec2 claim. Codex flagged that 5 examples either omit it or set null, but spec says required for `subprocess` and `ec2`. Falsifier: grep examples to see actual usage. Likely fix: change "Required for subprocess, ec2" to something like "Required for subprocess; optional for ec2 (when execution is implicit via member/skills inheritance)". Need to inspect first.
+
+**Signal:** [TICK_COMPLETE] metric=spec_digest_canonical_defined=1,test_vector_reproducible=true

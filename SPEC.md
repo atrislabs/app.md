@@ -134,7 +134,59 @@ A conforming parser:
    - **Closed sub-schemas:** rule 4c does NOT apply inside `secrets`, `auth`, `endpoints.*`, or `monetization`. These blocks have a fixed key shape and are treated as closed; unknown nested keys MUST be rejected. Adding new keys inside a closed block bumps `schema_version`.
    - **Open user-defined blocks:** `events_schema` and `ui_spec` are open by design — their keys are app-defined (event names; layout hints). Parsers MUST NOT reject unknown keys inside these blocks. They are part of the manifest's contract, not the spec's.
 5. MUST treat `secrets` as names only — never resolve values during parse.
-6. MUST surface a stable `spec_digest` (SHA-256 of the canonicalized record) so callers can detect drift between APP.md and any cached registration.
+6. MUST surface a stable `spec_digest` — see [Canonicalization](#canonicalization) for the exact algorithm. The digest lets callers detect drift between APP.md and any cached registration in a parser-agnostic way.
+
+## Canonicalization
+
+The `spec_digest` is `SHA-256(canonical_record)`, lowercase hex. `canonical_record` is defined as follows.
+
+**Source.** The parsed YAML frontmatter MUST map cleanly into the JSON value space (objects, arrays, strings, integers, floats, booleans, nulls). YAML's null spellings (`~`, `null`, empty) all normalize to JSON `null` via the parser. The markdown body — everything after the closing `---` — is **excluded** from the digest: bodies are agent prompts that churn constantly during development. Body drift is tracked separately (file hash / git SHA / content hash).
+
+**Pre-canonicalization rejects.** A parser MUST reject the manifest before computing a digest if any of these are present:
+- Duplicate object keys at any nesting level.
+- YAML tags (`!Foo`), anchors (`&a`), or aliases (`*a`).
+- Non-JSON scalars (e.g. dates as YAML date type — represent as ISO 8601 strings instead).
+- `NaN`, `+Infinity`, `-Infinity`.
+- An unsupported `schema_version`. Validate version before digesting; do not digest a manifest a parser cannot interpret.
+
+**Strings.** Fed byte-for-byte into JCS. **No Unicode normalization** (NFC/NFD/NFKC/NFKD) is applied — two visually-identical strings with different code-point sequences MUST yield different digests.
+
+**JSON serialization (RFC 8785, JCS).** Apply RFC 8785 to the tree:
+- Object keys sorted lexicographically by Unicode code point, recursively.
+- No insignificant whitespace.
+- Strings written as literal UTF-8 (no `\uXXXX` escapes for non-ASCII).
+- Integers as decimal digits with no leading zeros (sign prefixed `-`).
+- Floats use the shortest round-trippable decimal per ECMAScript `Number.prototype.toString` (RFC 8785 §3.2.2.3).
+- `true` / `false` / `null` for booleans and null. `[]` empty array. `{}` empty object.
+
+**Exclusion.** If the manifest contains a top-level `spec_digest` field, exclude it from the canonical record before serialization (so an app can store its own digest without recursion). Nested `spec_digest` keys are not excluded.
+
+**Forward-compat.** Unknown top-level keys preserved by [Rule 4c](#fail-closed-scope) **DO** participate in the digest. The digest reflects the actual manifest, not the spec's known-keys subset.
+
+**Implementation.** Implementations MUST conform to RFC 8785; conformance tests SHOULD pin a specific JCS library and version. The algorithm itself fits in ~60 lines for languages without a JCS library — the worked example below is a sufficient self-test for any implementation.
+
+**Worked example.**
+
+```yaml
+---
+schema_version: 1
+name: x
+slug: x
+access: private
+runtime: local
+vault: local
+---
+```
+
+Canonical bytes:
+
+```
+{"access":"private","name":"x","runtime":"local","schema_version":1,"slug":"x","vault":"local"}
+```
+
+Expected digest: `eb9beb40790eeab0329641e230043e058e5819dfb5d526e81e7997af35b978a3`.
+
+A parser whose `spec_digest` differs from this on the example above is non-conforming.
 
 ## Spec evolution
 
