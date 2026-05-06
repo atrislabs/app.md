@@ -31,6 +31,10 @@
       "sha256": "725fac766c3404c8446e766349c7174554b54f4d1a6f7d026c8a7c028cbe9269"
     },
     {
+      "path": "fixtures/valid/unknown-top-level.yaml",
+      "sha256": "d4e9e462f70720a31aae86ea8e08ddcf2b54518965688b9cc62783a40a955353"
+    },
+    {
       "path": "fixtures/valid/web-public.yaml",
       "sha256": "c3e72ebde7cc905b9e4d5cbff924939e43c73573f3eb9eb3db2be7c4601c7f90"
     },
@@ -45,6 +49,46 @@
   ],
   "invalid": [
     {
+      "path": "fixtures/invalid/bad-access-enum.yaml",
+      "sha256": "adc1057d09d3ca89446d9178ca80a0961d2c743b426c23a5f718de42f0569208",
+      "keyword": "enum",
+      "expected_paths": [
+        "access"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-api-endpoint-type.yaml",
+      "sha256": "517a849bf501a83ff0a3be216d8bf42be390ecf4381bc7c81c9e437c634d38f2",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints.api"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-api-endpoint-url.yaml",
+      "sha256": "e5db6b6935210d25b5d611b3b07764bdfdbd1b083c2ddc6e1e5254c9bc63901d",
+      "keyword": "pattern",
+      "expected_paths": [
+        "endpoints.api"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/api-key-without-secret-ref.yaml",
+      "sha256": "c4f127db8d953721fe49cab36e31be2881b253c23b3006a2649ea39a78e6e8ab",
+      "keyword": "required",
+      "expected_paths": [
+        "auth.secret_ref"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/api-key-empty-secret-ref.yaml",
+      "sha256": "b2baa4bb706e131e808f9b465237095ea13a68499e3498bbbd35e3e31ea9aca0",
+      "keyword": "minLength",
+      "expected_paths": [
+        "auth.secret_ref"
+      ]
+    },
+    {
       "path": "fixtures/invalid/auth-unknown-key.yaml",
       "sha256": "2a4b455b0033064c0392d7c453eacc37d6ec594244882fa2f425d698f922d89a",
       "keyword": "additionalProperties",
@@ -53,11 +97,371 @@
       ]
     },
     {
+      "path": "fixtures/invalid/bad-artifact-dir-type.yaml",
+      "sha256": "de2bec03d034cb69b99e393c0c554de817716540208744dc28bdc3a495ca5250",
+      "keyword": "type",
+      "expected_paths": [
+        "artifact_dir"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-auth-block-type.yaml",
+      "sha256": "8a5bb9b427132f08940e4818d90d1331300e46414cfbb27ddf378a48d9f54c88",
+      "keyword": "type",
+      "expected_paths": [
+        "auth"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-auth-type-enum.yaml",
+      "sha256": "1673851da338a3ed7f9be5237076034eb90daa3e87b9e85ff42bb9ff3df43a64",
+      "keyword": "enum",
+      "expected_paths": [
+        "auth.type"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-auth-issuer-url.yaml",
+      "sha256": "53086c6cf6b934a36ccefff56e4fc8be19e0d0cce4c31c950e33159e01fc89a5",
+      "keyword": "pattern",
+      "expected_paths": [
+        "auth.issuer"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-auth-issuer-type.yaml",
+      "sha256": "8e9b13290c6aa11fe2bcfd309cdf7368ab795de5afc82b809b61fe63ce8ba3c6",
+      "keyword": "type",
+      "expected_paths": [
+        "auth.issuer"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-auth-secret-ref-type.yaml",
+      "sha256": "30239c2c4a956c15aa69762c6f98b19cbd00d6ed659c6162333cd6136502fe24",
+      "keyword": "type",
+      "expected_paths": [
+        "auth.secret_ref"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-block-pipeline-id.yaml",
+      "sha256": "3d6f72673714e650b6540ff64702485173a31a17b37d327e26afb96c58a1fd18",
+      "keyword": "pattern",
+      "expected_paths": [
+        "block_pipeline_id"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-capability-type.yaml",
+      "sha256": "23e391de7ca013b489b1a568ab4d35b167dc32d4b540f6d1d052211350bd5b92",
+      "keyword": "type",
+      "expected_paths": [
+        "capabilities.0"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-capabilities-type.yaml",
+      "sha256": "27d8e8d60497bccc80eeedf3f163534c8433eee3704871a1218165aae07c56f5",
+      "keyword": "type",
+      "expected_paths": [
+        "capabilities"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-created-by-agent-slug.yaml",
+      "sha256": "94ce81c9b61a04325c2ab7fee0d6710aeea2639a1e24a005170946c1a81c5ced",
+      "keyword": "pattern",
+      "expected_paths": [
+        "created_by_agent"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-created-by-agent-type.yaml",
+      "sha256": "326c906860dba6c5f2cfb7191fd4c283b1bcf3dfffcdbaee592ca7008cb4fa25",
+      "keyword": "type",
+      "expected_paths": [
+        "created_by_agent"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-creator-share-type.yaml",
+      "sha256": "523e96662cf1d30f1b3c09fbb22cfdcaeae72076e71c2ecf8f5b2f73b9c7da58",
+      "keyword": "type",
+      "expected_paths": [
+        "monetization.creator_share"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-description-type.yaml",
+      "sha256": "899278e067b52e2e8392e36cf9905c07510d8f16dac500a773fd4aa5feaf9430",
+      "keyword": "type",
+      "expected_paths": [
+        "description"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-endpoint-url.yaml",
+      "sha256": "4fef49eef0f72afcd511d0cd08880e6302986805c810a2811ca3a8b4aa15819f",
+      "keyword": "pattern",
+      "expected_paths": [
+        "endpoints.frontend"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-endpoints-block-type.yaml",
+      "sha256": "22b606eb842d6e6ece9a8970cd8b481bcc857acacb453dd15d597d7b820d0b9e",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-events-schema-type.yaml",
+      "sha256": "738b959d8737df7c824d9c741826d62e573eac6d4fc4d9bd564ecdf18c82259b",
+      "keyword": "type",
+      "expected_paths": [
+        "events_schema"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-frontend-endpoint-type.yaml",
+      "sha256": "9f4587a9ce41ff3abcdc15d53edf02dad7f3feb3a84eaed8813a7bcbe7e96f19",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints.frontend"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-ios-bundle-id-type.yaml",
+      "sha256": "f5f53c22133a42a3be52ad39611ffabed9f583a587c9964f8b4ecd65aa573ffa",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints.bundle_id"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-ios-deep-link-scheme-type.yaml",
+      "sha256": "6d13ea714dca8f18965a9f38677fb14c70c9e64a7d7f20030c9cb78ce8747bca",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints.deep_link_scheme"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-member-slug.yaml",
+      "sha256": "d64ec5c393033209f1d3611790ec4c224f258c41ccff9129b5a08f6171603da1",
+      "keyword": "pattern",
+      "expected_paths": [
+        "member"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-member-type.yaml",
+      "sha256": "a5b5b8e204d3a29993a657c4d404df366b45e1744139f92f7275ac73e29b7a42",
+      "keyword": "type",
+      "expected_paths": [
+        "member"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-mcp-endpoint-url.yaml",
+      "sha256": "6af3a512a16de8516b7ecefa4ef0b22c81a6c40e1dba724a79ce9caed8aad792",
+      "keyword": "pattern",
+      "expected_paths": [
+        "endpoints.mcp"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-mcp-endpoint-type.yaml",
+      "sha256": "4b0519c5267267d954c3f3588687f40e077fa32f8fa87f64a993e45efe57ceaf",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints.mcp"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-monetization-block-type.yaml",
+      "sha256": "5ffc9c5bb8bfbf4ccae106f4efc0bb17e55d8a1d29715f465f8c55f632fe59c7",
+      "keyword": "type",
+      "expected_paths": [
+        "monetization"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-name-type.yaml",
+      "sha256": "62961b12845bc5461d0503ec07c675ccae65068cf0f6e366db9851cfca9b52c9",
+      "keyword": "type",
+      "expected_paths": [
+        "name"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-price-credits-type.yaml",
+      "sha256": "6512e0043eec09b057fae55dfd9136b2f7d9b6e8cef93efb4d4de5699fcac1ef",
+      "keyword": "type",
+      "expected_paths": [
+        "monetization.price_credits"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-render-enum.yaml",
+      "sha256": "70aef3642470df8b31201e94b43223efb29fa7043c07a24cebe6db4f650dc3ff",
+      "keyword": "enum",
+      "expected_paths": [
+        "render"
+      ]
+    },
+    {
       "path": "fixtures/invalid/bad-runtime-enum.yaml",
       "sha256": "d5c68443f2aacbc53fdb5b3284c49bc44261fd2010413fa53369152ad93d3030",
       "keyword": "enum",
       "expected_paths": [
         "runtime"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-runtime-auth-enum.yaml",
+      "sha256": "3433f5fcf19a9288261e15730c7a87566a4454fb4831dc604a4bc6c9b87fd63e",
+      "keyword": "enum",
+      "expected_paths": [
+        "runtime_auth"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-schedule-type.yaml",
+      "sha256": "bacea8aa0bccc58d800e40730cde3cc2e1fcef9ceb7b222b82b07b076a09a162",
+      "keyword": "type",
+      "expected_paths": [
+        "schedule"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-secrets-type.yaml",
+      "sha256": "fcd70944b166ca2909c1078958d55d18efc5e369f5b9761c1836ea6c0f6df681",
+      "keyword": "type",
+      "expected_paths": [
+        "secrets"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-skill-slug.yaml",
+      "sha256": "7ec962ab40d87f7c970f26c0400cb102101ff3c87652c1176d43bffd5f20f11a",
+      "keyword": "pattern",
+      "expected_paths": [
+        "skills.0"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-slug-type.yaml",
+      "sha256": "69d8c48bd7230db21164373a5dfaa62ae7059b64b205bb82cceacf56bf246496",
+      "keyword": "type",
+      "expected_paths": [
+        "slug"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-skills-type.yaml",
+      "sha256": "e89bbe6489140f0d0a3232be0ee611964b43bad8bcde86ce71e40310029476e8",
+      "keyword": "type",
+      "expected_paths": [
+        "skills"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-spec-digest.yaml",
+      "sha256": "fcf7102b7da1290acb5b56a2a2406b1556b4e010cd99eec465035b869841e204",
+      "keyword": "pattern",
+      "expected_paths": [
+        "spec_digest"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-spec-digest-type.yaml",
+      "sha256": "805b5f6ae5f922089cd79b0f9127eb177388ded99e9336d2471e0b3a57e66601",
+      "keyword": "type",
+      "expected_paths": [
+        "spec_digest"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-stripe-connect-account-type.yaml",
+      "sha256": "326f98a7ae33a8514e3dda7a5edd099c4575f1e2f3625e5e08ab17d05132dce1",
+      "keyword": "type",
+      "expected_paths": [
+        "monetization.stripe_connect_account"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-surface-enum.yaml",
+      "sha256": "d143b2f1975d12045625d9d00d8d1d1f7d458dc13e1e4cb713a9f6eccab5113a",
+      "keyword": "enum",
+      "expected_paths": [
+        "surfaces.0"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-surfaces-type.yaml",
+      "sha256": "e5e83a58d5144d153fe5bd34f23fc0b5cd5d99be3272d746771de6e9eda3a29c",
+      "keyword": "type",
+      "expected_paths": [
+        "surfaces"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-timezone-type.yaml",
+      "sha256": "22f98ad73cc9e36354b6d5791822fdfc661ca954666c58052fee995853213588",
+      "keyword": "type",
+      "expected_paths": [
+        "timezone"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-ui-spec-type.yaml",
+      "sha256": "16996fb5ed62bc34b5d88c573f0716e73756bc76727958dc7666e9e51c856b90",
+      "keyword": "type",
+      "expected_paths": [
+        "ui_spec"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-vault-enum.yaml",
+      "sha256": "1b11d72411069e3531e9e54c2945cb3b25afc57fe8ad99097f881342e0465934",
+      "keyword": "enum",
+      "expected_paths": [
+        "vault"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-webhook-endpoint-url.yaml",
+      "sha256": "3e8eb2eadc1ebe57bccbadfc8e34880f2c207acd8ef0a8ce387c0752a8c62028",
+      "keyword": "pattern",
+      "expected_paths": [
+        "endpoints.webhook"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-webhook-endpoint-type.yaml",
+      "sha256": "0439fec56095677b76ed6f90e4bbc5dcfd205bb4f99a3f7e790f483c8f89ef0e",
+      "keyword": "type",
+      "expected_paths": [
+        "endpoints.webhook"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-wiki-path-type.yaml",
+      "sha256": "108ad0646ef87c4815382080599e543b94bf58193ae48f6b7a0bbab3de82cf33",
+      "keyword": "type",
+      "expected_paths": [
+        "wiki_paths.0"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/bad-wiki-paths-type.yaml",
+      "sha256": "29c62587d38d1da0a21d1d3a0b3f14d8488deb56701d56058dcc7e6df5b6c611",
+      "keyword": "type",
+      "expected_paths": [
+        "wiki_paths"
       ]
     },
     {
@@ -77,11 +481,123 @@
       ]
     },
     {
+      "path": "fixtures/invalid/creator-share-negative.yaml",
+      "sha256": "2dac9add90820826a99afa58d884ad92e64dcc21688d2e97af69f5c75615f1d6",
+      "keyword": "minimum",
+      "expected_paths": [
+        "monetization.creator_share"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/creator-share-over-one.yaml",
+      "sha256": "a3dfad51d44e795cb5cfde3600c9dc2d5a941b09516c3d9837d5422bf8e188ed",
+      "keyword": "maximum",
+      "expected_paths": [
+        "monetization.creator_share"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/endpoints-unknown-key.yaml",
+      "sha256": "bd1f72d0cf9666e35864bcd0273bf6b7b280b2d5a9ac6608ee43d8225f11f16a",
+      "keyword": "additionalProperties",
+      "expected_paths": [
+        "endpoints.health"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/empty-secret-name.yaml",
+      "sha256": "c01703779d0247092aee6e54310381cd4552b77989c1a0c028c5493436e5bf17",
+      "keyword": "minLength",
+      "expected_paths": [
+        "secrets.0"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/empty-name.yaml",
+      "sha256": "901df7719e5677dbb4673f93bc566f9ab9554b65570e9e513a0a11ff54163cb1",
+      "keyword": "minLength",
+      "expected_paths": [
+        "name"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/external-missing-api.yaml",
+      "sha256": "53175ebaabf3616131bae18371bac549852414dc7909b79c34c0e59125dcd36d",
+      "keyword": "required",
+      "expected_paths": [
+        "endpoints.api"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/ios-missing-bundle-id.yaml",
+      "sha256": "f29a2f3308bfb7715bdfae0a82c0a52b89cd3ed386b5b4bfeb5c2d27d59464a3",
+      "keyword": "required",
+      "expected_paths": [
+        "endpoints.bundle_id"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/ios-missing-deep-link-scheme.yaml",
+      "sha256": "24e5550c12563ac4256613e317d1e4e31c4d116b5f38cdd80750a2b03d09e6c7",
+      "keyword": "required",
+      "expected_paths": [
+        "endpoints.deep_link_scheme"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/local-with-endpoints.yaml",
+      "sha256": "e68ec4d27479a7e0e892d4586ae4618ec3d3c13510792592a7c96026456d6a18",
+      "keyword": "not",
+      "expected_paths": [
+        "endpoints"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/missing-access.yaml",
+      "sha256": "a260cabae8c875800b94e4215a36ee9e5e973e61e0a7fd3ada62b5a6636ed04d",
+      "keyword": "required",
+      "expected_paths": [
+        "access"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/missing-name.yaml",
+      "sha256": "a03be7e51a3546bc043dcbb2211f00fa811c02e75f766087df7351ec99042c56",
+      "keyword": "required",
+      "expected_paths": [
+        "name"
+      ]
+    },
+    {
       "path": "fixtures/invalid/missing-required-vault.yaml",
       "sha256": "fa6902cbf72739bc0fd35fb379b4fb294fcf7539f69f47ec9a947bf676bd5f35",
       "keyword": "required",
       "expected_paths": [
         "vault"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/missing-runtime.yaml",
+      "sha256": "ecb30cb05df6d1b91b8fdbcda1f6e3ca876741c6506280e9c1c8c8d4b9c69e98",
+      "keyword": "required",
+      "expected_paths": [
+        "runtime"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/missing-schema-version.yaml",
+      "sha256": "3533af6ef689cdfc9432a7e4d3db35b0c4ccefa45bfdbb2d7b353907e4ee3538",
+      "keyword": "required",
+      "expected_paths": [
+        "schema_version"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/missing-slug.yaml",
+      "sha256": "77d6db18ec76b732db35f24aa512f25900aba5fc7ff3e81d65d65e06b258ef69",
+      "keyword": "required",
+      "expected_paths": [
+        "slug"
       ]
     },
     {
@@ -117,11 +633,59 @@
       ]
     },
     {
+      "path": "fixtures/invalid/private-web-auth-missing-type.yaml",
+      "sha256": "b12f144e18b654922c8de8862423a346259297d7841c6f4b09c37b475ef509d1",
+      "keyword": "required",
+      "expected_paths": [
+        "auth.type"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/price-credits-negative.yaml",
+      "sha256": "a5b2c9e3e9324ff4233f3c39116df6958ae6fd500ffa73d3a12315b79222bfae",
+      "keyword": "minimum",
+      "expected_paths": [
+        "monetization.price_credits"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/schedule-multiline.yaml",
+      "sha256": "a59e8dc1a60eaab3d78984b75c01cf7d9961e6db71508f8f1780d06733fb0beb",
+      "keyword": "pattern",
+      "expected_paths": [
+        "schedule"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/schedule-six-fields.yaml",
+      "sha256": "fc9c267ebca5aa4d8bf1faacf4b044e9cfead217639bcab2278ebc5ff309c1f6",
+      "keyword": "pattern",
+      "expected_paths": [
+        "schedule"
+      ]
+    },
+    {
       "path": "fixtures/invalid/schema-version-2.yaml",
       "sha256": "cf3ac0a607f5f343c2abfcf65b71809850edd635ee117e44f214c34e1778d444",
       "keyword": "const",
       "expected_paths": [
         "schema_version"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/stripe-account-bad-prefix.yaml",
+      "sha256": "1290c93842a2035c7cf28ab51060b1ee8e5d278a8a4f9ea6f0d72a68599572e8",
+      "keyword": "pattern",
+      "expected_paths": [
+        "monetization.stripe_connect_account"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/subprocess-with-endpoints.yaml",
+      "sha256": "99f301a05f8fa15727da99ff0ecf96856da9935c4bff9946a6f5cd411f816362",
+      "keyword": "not",
+      "expected_paths": [
+        "endpoints"
       ]
     },
     {
@@ -146,6 +710,22 @@
       "keyword": "pattern",
       "expected_paths": [
         "slug"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/web-missing-frontend.yaml",
+      "sha256": "051375f88f8c10dea2ba59242f661f8bfa62b74fb2d16918086fb8255b4f4771",
+      "keyword": "required",
+      "expected_paths": [
+        "endpoints.frontend"
+      ]
+    },
+    {
+      "path": "fixtures/invalid/webhook-missing-webhook.yaml",
+      "sha256": "1b1e49ad50e569735020cbee9e1852aa81771815c5efa8ab35886a63157fcb27",
+      "keyword": "required",
+      "expected_paths": [
+        "endpoints.webhook"
       ]
     }
   ]

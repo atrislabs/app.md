@@ -1,0 +1,8 @@
+schema_version: 1
+name: Negative Price Credits
+slug: price-credits-negative
+access: public
+runtime: template
+vault: app_secrets
+monetization:
+  price_credits: -1

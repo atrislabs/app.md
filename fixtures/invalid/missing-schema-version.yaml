@@ -1,0 +1,5 @@
+name: Missing Schema Version
+slug: missing-schema-version
+access: private
+runtime: local
+vault: local

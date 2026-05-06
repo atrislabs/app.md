@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Capabilities Type
+slug: bad-capabilities-type
+access: private
+runtime: local
+vault: local
+capabilities: billing

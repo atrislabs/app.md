@@ -1,0 +1,6 @@
+schema_version: 1
+name: Bad Access Enum
+slug: bad-access-enum
+access: internal
+runtime: local
+vault: local

@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Creator Share Type
+slug: bad-creator-share-type
+access: private
+runtime: local
+vault: local
+monetization:
+  creator_share: half

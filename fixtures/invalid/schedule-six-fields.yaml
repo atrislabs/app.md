@@ -1,0 +1,7 @@
+schema_version: 1
+name: Schedule with six cron fields
+slug: schedule-six-fields
+access: private
+runtime: local
+vault: local
+schedule: "0 7 * * * *"

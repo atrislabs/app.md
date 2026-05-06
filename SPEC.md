@@ -10,13 +10,13 @@ An `APP.md` is a markdown file with YAML frontmatter that fully describes an age
 {{ markdown body — instructions for the agent }}
 ```
 
-Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails schema validation. Reference parser: `backend/services/app_folder_service.py:load_from_folder` in `atrislabs/atrisos-backend`. The frontmatter shape is normatively pinned by [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`, JSON Schema Draft 2020-12). Where prose and schema diverge, prose normative rules in this file are authoritative; the schema is a machine-checkable subset of those rules (some rules — IANA timezone validity, RFC 8785 canonicalization, body content — fall outside JSON Schema's expressive range and live in the parser).
+Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails schema validation. Public reference parser: [`scripts/validate.py`](./scripts/validate.py). Reference runtime: `backend/services/app_folder_service.py:load_from_folder` in `atrislabs/atrisos-backend`. The frontmatter shape is normatively pinned by [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`, JSON Schema Draft 2020-12), with [`schema/app.schema.json`](./schema/app.schema.json) as the stable current-version alias. Where prose and schema diverge, prose normative rules in this file are authoritative; the schema is a machine-checkable subset of those rules (some rules — IANA timezone validity, RFC 8785 canonicalization, body content — fall outside JSON Schema's expressive range and live in the parser).
 
 ## Required fields
 
 | Field | Type | Notes |
 |---|---|---|
-| `schema_version` | int ≥ 1 | Bump on breaking change |
+| `schema_version` | const `1` | Bump on breaking change |
 | `name` | string | Human-readable |
 | `slug` | string | Identifier used in URLs, vaults, run keys. MUST match regex `^[a-z][a-z0-9]*(-[a-z0-9]+)*$` (lowercase letter to start; groups of `[a-z0-9]+` joined by single hyphens; no leading digit, no underscores, no double hyphens, no trailing hyphen) and MUST be 1–64 characters long. The same grammar applies to `member`, `skills[]`, and `created_by_agent`. |
 | `access` | enum | `private` \| `business` \| `public` |
@@ -44,7 +44,7 @@ Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails 
 
 ## Execution binding
 
-Exactly one of these tells the runtime how to actually execute. The required shape depends on `runtime`. Two runtimes (`local`, `template`) are deliberately bindingless — see the [No-binding runtimes](#no-binding-runtimes) section after the table.
+Runtime-specific fields below tell the runtime how to actually execute. The required shape depends on `runtime`, and some runtimes require or allow more than one binding field. Two runtimes (`local`, `template`) are deliberately bindingless — see the [No-binding runtimes](#no-binding-runtimes) section after the table.
 
 | Field | Type | Required for | Notes |
 |---|---|---|---|
@@ -57,7 +57,7 @@ Exactly one of these tells the runtime how to actually execute. The required sha
 | `endpoints.deep_link_scheme` | string | `ios` | URL scheme |
 | `auth.type` | enum | `webhook`, `external`, `web` if non-public | `none` \| `api_key` \| `bearer` \| `hmac` \| `oauth` \| `jwt` |
 | `auth.issuer` | URL | when `auth.type=oauth` / `jwt` | OIDC issuer |
-| `auth.secret_ref` | string | when auth needs a key | Vault secret name |
+| `auth.secret_ref` | non-empty string | when auth needs a key | Vault secret name |
 | `capabilities` | list[string] | optional | Free-form labels for routers |
 | _none_ | — | `local`, `template` | No execution-binding field is required or permitted; see below |
 
@@ -73,13 +73,13 @@ Validators MUST reject manifests that omit a required binding for their declared
 | Field | Type | Notes |
 |---|---|---|
 | `secrets` | list[string] | Names only — values resolve from `vault` at run time |
-| `schedule` | cron string | Optional. Standard 5-field cron. Default TZ is UTC; override with `timezone:` below. `"0 7 * * *"` = 07:00 daily in the resolved TZ. |
+| `schedule` | cron string | Optional. Standard 5-field, single-line cron. Default TZ is UTC; override with `timezone:` below. `"0 7 * * *"` = 07:00 daily in the resolved TZ. |
 | `timezone` | IANA TZ string | Optional. e.g. `America/Los_Angeles`, `Europe/London`. Default `UTC` for every runtime (including `local`). When set, `schedule` is interpreted in this TZ. |
 | `runtime_auth` | enum | How Atris authenticates the runtime *back* to itself: `none` \| `jwt` \| `api_key`. Default `jwt` |
 
 ### Schedule + timezone
 
-- Cron expressions are standard 5-field (`min hour dom mon dow`). Optional fields like seconds or year are not part of v1.
+- Cron expressions are standard 5-field, single-line strings (`min hour dom mon dow`). Optional fields like seconds or year are not part of v1.
 - Default TZ for every runtime is **UTC**. Customer-machine local time is NOT a default — leaving `timezone` unset on `runtime: local` still means UTC, to keep behavior identical across CI / dev / prod and stop the "works on my laptop, fires at 3am in CI" footgun. Apps that want customer-local firing MUST declare `timezone:` explicitly.
 - DST handling (when `timezone:` resolves to a TZ that observes DST):
   - **Nonexistent local times** (e.g. `02:30` on the spring-forward morning) MUST be skipped. The runtime SHOULD log the skip for observability; specific event names are runtime-defined.
@@ -103,8 +103,8 @@ Validators MUST reject manifests that omit a required binding for their declared
 |---|---|---|
 | `surfaces` | list[enum] | Where the app shows up: `web` \| `slack` \| `mcp` \| `voice` \| `mobile` \| `email` \| `cli` |
 | `render` | enum | `inline` \| `embed` \| `fullscreen` \| `voice` \| `none`. Defaults to `none` |
-| `ui_spec` | dict | Free-form layout / theme / component hints when `render` is not `none` (future: typed React spec) |
-| `events_schema` | dict | Declared shape of events this app emits to `app_events`. Arbitrary JSON-compatible dict today |
+| `ui_spec` | dict\|null | Free-form layout / theme / component hints when `render` is not `none`. `null` means no UI contract is declared (future: typed React spec) |
+| `events_schema` | dict\|null | Declared shape of events this app emits to `app_events`. `null` means no event contract is declared; arbitrary JSON-compatible dict otherwise |
 
 ## Monetization (optional)
 
@@ -191,6 +191,6 @@ A parser whose `spec_digest` differs from this on the example above is non-confo
 
 ## Spec evolution
 
-This is `schema_version: 1`. Field additions that are backwards-compatible (new optional fields at the top level, new enum values that callers can ignore) do not bump the version — they are forward-compatible per Rule 4c (parsers warn-and-continue and preserve the field on re-emit). Anything that requires existing parsers to change (renamed required field, removed enum value, semantic shift, additions inside a closed sub-schema) bumps to `schema_version: 2` and ships a migration note in CHANGELOG.
+This is `schema_version: 1`. Backwards-compatible field additions are limited to new optional top-level fields that Rule 4c parsers can warn-and-continue on while preserving them on re-emit. Anything that requires existing parsers to change (renamed required field, removed enum value, new enum value, semantic shift, additions inside a closed sub-schema) bumps to `schema_version: 2` and ships a migration note in [`CHANGELOG.md`](./CHANGELOG.md).
 
-The reference parser pins schema validation to `schema_version`, so old apps keep parsing under their declared version.
+The public v1 reference parser validates only `schema_version: 1`; future parsers that support multiple schema versions MUST dispatch validation by the manifest's declared `schema_version`.

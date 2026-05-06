@@ -1,0 +1,8 @@
+schema_version: 1
+name: Local app with endpoints
+slug: local-with-endpoints
+access: private
+runtime: local
+vault: local
+endpoints:
+  api: https://example.com/api

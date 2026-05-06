@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Skill Slug
+slug: bad-skill-slug
+access: private
+runtime: local
+vault: local
+skills:
+  - bad_skill

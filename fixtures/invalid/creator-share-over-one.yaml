@@ -1,0 +1,9 @@
+schema_version: 1
+name: Creator Share Over One
+slug: creator-share-over-one
+access: public
+runtime: template
+vault: app_secrets
+monetization:
+  price_credits: 0
+  creator_share: 1.2

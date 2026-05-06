@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Price Credits Type
+slug: bad-price-credits-type
+access: private
+runtime: local
+vault: local
+monetization:
+  price_credits: ten

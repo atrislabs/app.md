@@ -1,0 +1,8 @@
+schema_version: 1
+name: External Missing API Endpoint
+slug: external-missing-api
+access: public
+runtime: external
+vault: app_secrets
+endpoints:
+  frontend: https://app.example.com

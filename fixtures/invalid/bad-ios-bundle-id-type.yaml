@@ -1,0 +1,10 @@
+schema_version: 1
+name: Bad iOS Bundle ID Type
+slug: bad-ios-bundle-id-type
+access: public
+runtime: ios
+vault: local
+endpoints:
+  bundle_id:
+    - ai.atris.example
+  deep_link_scheme: atris-example

@@ -1,0 +1,10 @@
+schema_version: 1
+name: Bad MCP Endpoint Type
+slug: bad-mcp-endpoint-type
+access: public
+runtime: web
+vault: local
+endpoints:
+  frontend: https://app.example.com
+  mcp:
+    - https://mcp.example.com

@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad UI Spec Type
+slug: bad-ui-spec-type
+access: private
+runtime: local
+vault: local
+ui_spec: fullscreen

@@ -1,0 +1,12 @@
+schema_version: 1
+name: Multiline Schedule
+slug: schedule-multiline
+access: private
+runtime: local
+vault: local
+schedule: |
+  0
+  7
+  *
+  *
+  *

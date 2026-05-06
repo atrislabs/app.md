@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Events Schema Type
+slug: bad-events-schema-type
+access: private
+runtime: local
+vault: local
+events_schema: app.started

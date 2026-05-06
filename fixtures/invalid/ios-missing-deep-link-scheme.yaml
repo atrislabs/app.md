@@ -1,0 +1,8 @@
+schema_version: 1
+name: iOS Missing Deep Link Scheme
+slug: ios-missing-deep-link-scheme
+access: public
+runtime: ios
+vault: app_secrets
+endpoints:
+  bundle_id: com.example.atris

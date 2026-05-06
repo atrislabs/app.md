@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Auth Block Type
+slug: bad-auth-block-type
+access: private
+runtime: local
+vault: local
+auth:
+  - api_key

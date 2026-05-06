@@ -1,0 +1,5 @@
+schema_version: 1
+name: Missing Access
+slug: missing-access
+runtime: local
+vault: local

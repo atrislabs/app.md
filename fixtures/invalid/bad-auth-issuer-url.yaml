@@ -1,0 +1,11 @@
+schema_version: 1
+name: Bad Auth Issuer URL
+slug: bad-auth-issuer-url
+access: business
+runtime: external
+vault: atris-kms
+endpoints:
+  api: https://api.example.com
+auth:
+  type: oauth
+  issuer: issuer.example.com

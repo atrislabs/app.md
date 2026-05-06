@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Endpoint URL
+slug: bad-endpoint-url
+access: public
+runtime: web
+vault: app_secrets
+endpoints:
+  frontend: ftp://app.example.com

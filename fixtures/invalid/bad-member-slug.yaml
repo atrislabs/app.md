@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Member Slug
+slug: bad-member-slug
+access: private
+runtime: local
+vault: local
+member: Chief-Of-Staff
