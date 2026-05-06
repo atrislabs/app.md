@@ -1,6 +1,6 @@
 # APP.md
 
-A markdown-with-frontmatter manifest format for **agent-runnable apps**.
+A markdown-with-frontmatter manifest format for **agent-runnable apps** and portable capability surfaces.
 
 Inspired by [agentskills.io](https://agentskills.io)'s `SKILL.md`. Where `SKILL.md` answers *"how does an agent do X"*, `APP.md` answers *"what does the customer get"* — a self-contained, schedulable, vault-aware app that any agent runtime can pick up and execute.
 
@@ -30,6 +30,12 @@ That's the whole app. The folder it lives in is the source of truth; the runtime
 Today every agent platform invents its own app shape — Postgres rows, JSON configs, Python classes, GPT Actions schemas. None survive moving to a different runtime. APP.md is markdown + YAML, runtime-agnostic, diffable, AI-readable, human-editable. If your runtime can parse it, the app runs.
 
 Long-term mission: APP.md is the portable app contract below AI runtimes, marketplaces, schedulers, and sandboxes. See [VISION.md](./VISION.md).
+
+## What an app can do
+
+An APP.md app can be run by an agent, clicked by a human, called from a CLI, exposed as an API or MCP tool, scheduled, rendered as a UI, wrapped around an external service, published as a template, or composed with another app.
+
+Customers can use APP.md to package a repeatable capability and move it between runtimes. Users and agents can run, inspect, call, chain, approve, and review that capability. Runtime builders can parse the same manifest and decide how to execute, render, secure, bill, schedule, and observe it.
 
 ## Anatomy
 

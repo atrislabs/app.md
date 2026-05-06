@@ -1,6 +1,6 @@
 # APP.md — Spec v1
 
-An `APP.md` is a markdown file with YAML frontmatter that fully describes an agent-runnable app. The frontmatter is the manifest; the body is the instructions the runtime hands to the agent.
+An `APP.md` is a markdown file with YAML frontmatter that fully describes an agent-runnable app. Product-wise, an app is a portable capability surface: something a human, agent, CLI, UI, webhook, runtime, or another app can run, render, schedule, call, inspect, and verify. The frontmatter is the manifest; the body is the instructions the runtime hands to the agent.
 
 ```
 ---
@@ -11,6 +11,15 @@ An `APP.md` is a markdown file with YAML frontmatter that fully describes an age
 ```
 
 Parsers MUST reject any APP.md whose frontmatter is missing, unclosed, or fails schema validation. Public reference parser: [`scripts/validate.py`](./scripts/validate.py). Reference runtime: `backend/services/app_folder_service.py:load_from_folder` in `atrislabs/atrisos-backend`. The frontmatter shape is normatively pinned by [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`, JSON Schema Draft 2020-12), with [`schema/app.schema.json`](./schema/app.schema.json) as the stable current-version alias. Where prose and schema diverge, prose normative rules in this file are authoritative; the schema is a machine-checkable subset of those rules (some rules — IANA timezone validity, RFC 8785 canonicalization, body content — fall outside JSON Schema's expressive range and live in the parser).
+
+## Conceptual model
+
+This spec describes the manifest contract, not every runtime behavior.
+
+- Customers can package a capability once and connect it to a runtime, UI, CLI, scheduler, webhook, marketplace, or another app.
+- Users and agents can run the app, inspect the manifest, call it through the surface a runtime exposes, review its outputs, and approve sensitive actions.
+- Runtime builders decide how the app executes, renders, authenticates, bills, observes, and composes with other apps.
+- App-to-app composition is represented in v1 through runtime surfaces such as `endpoints.*`, `capabilities`, `surfaces`, MCP, webhooks, and the markdown body. Future versions may standardize richer dependency and receipt fields.
 
 ## Required fields
 
