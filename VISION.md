@@ -34,7 +34,7 @@ An APP.md app can be a workflow, tool, agent skill, UI, webhook wrapper, schedul
 
 The important rule is that it has a boundary. Something can call it, render it, schedule it, inspect it, and verify what happened.
 
-That means one app can also connect to another app. A customer support app can call a refund-policy app. A daily briefing app can call a calendar app and a commit-summary app. A review app can call a verifier app, then write the receipt another agent uses next time.
+That means one app can also connect to another app. A customer support app can call a refund-policy app. A daily briefing app can call a calendar app and a commit-summary app. A review app can call a verifier app, then write the receipt another agent uses next time. The [`app-composition-coordinator`](./examples/app-composition-coordinator/APP.md) example shows this pattern as an APP.md manifest.
 
 ## Who Does What
 
