@@ -29,6 +29,8 @@ That's the whole app. The folder it lives in is the source of truth; the runtime
 
 Today every agent platform invents its own app shape — Postgres rows, JSON configs, Python classes, GPT Actions schemas. None survive moving to a different runtime. APP.md is markdown + YAML, runtime-agnostic, diffable, AI-readable, human-editable. If your runtime can parse it, the app runs.
 
+Long-term mission: APP.md is the portable app contract below AI runtimes, marketplaces, schedulers, and sandboxes. See [VISION.md](./VISION.md).
+
 ## Anatomy
 
 An app is a folder:
