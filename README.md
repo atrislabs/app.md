@@ -41,6 +41,8 @@ For a concrete app-composition example, see [`examples/app-composition-coordinat
 
 For a concrete Review Inbox / Learning Loop example, see [`examples/learning-loop-reviewer/APP.md`](./examples/learning-loop-reviewer/APP.md), which reviews receipts, assigns owners, and turns failures into verified improvement tasks.
 
+For long-running goals, put the mission, boundaries, approval gates, proof rule, and receipt requirement in the APP.md body. [`VISION.md`](./VISION.md#long-running-goal-contract) describes the Goal Contract pattern.
+
 For the proof loop behind app runs, see [RECEIPTS.md](./RECEIPTS.md): status, owner, verifier, decision, and learned fields for self-correcting agency.
 
 The public verifier also checks receipt packet examples, including [`examples/app-composition-coordinator/receipts/sample-receipt.json`](./examples/app-composition-coordinator/receipts/sample-receipt.json) and the failure-to-learning receipt in [`examples/app-composition-coordinator/receipts/sample-failure-receipt.json`](./examples/app-composition-coordinator/receipts/sample-failure-receipt.json).

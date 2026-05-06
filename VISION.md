@@ -60,6 +60,21 @@ The loop is: observe -> understand -> decide -> act -> verify -> receive feedbac
 
 In APP.md terms, that means the manifest declares the capability, the runtime executes it, the app writes outputs and receipts, a human or agent reviews the result, and the next version becomes easier to trust. [`RECEIPTS.md`](./RECEIPTS.md) defines the receipt packet that makes this self-correcting loop auditable; [`learning-loop-reviewer`](./examples/learning-loop-reviewer/APP.md) shows how receipts become owner-routed improvement tasks.
 
+## Long-Running Goal Contract
+
+To give an APP.md app a mission it can keep pursuing, write the goal as operating instructions in the body and make every run leave a receipt.
+
+The useful shape is:
+
+1. Name the mission and boundary.
+2. Say which inputs, tools, apps, or people it may use.
+3. Say which actions require approval.
+4. Say what proof counts as done.
+5. Require a receipt with owner, verifier, decision, and learned fields.
+6. Let a reviewer app, such as [`learning-loop-reviewer`](./examples/learning-loop-reviewer/APP.md), turn that receipt into the next smaller task.
+
+That gives the app enough freedom to keep moving while keeping direction, taste, and truth inspectable.
+
 ## Principles
 
 1. **One folder is the source of truth.** The app should be inspectable, forkable, and movable without exporting hidden platform state.
