@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Artifact Dir Type
+slug: bad-artifact-dir-type
+access: private
+runtime: local
+vault: local
+artifact_dir: 42

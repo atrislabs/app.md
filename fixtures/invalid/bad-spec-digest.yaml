@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Spec Digest
+slug: bad-spec-digest
+access: private
+runtime: local
+vault: local
+spec_digest: not-a-sha256

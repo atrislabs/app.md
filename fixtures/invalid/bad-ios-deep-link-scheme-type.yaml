@@ -1,0 +1,10 @@
+schema_version: 1
+name: Bad iOS Deep Link Scheme Type
+slug: bad-ios-deep-link-scheme-type
+access: public
+runtime: ios
+vault: local
+endpoints:
+  bundle_id: ai.atris.example
+  deep_link_scheme:
+    - atris-example

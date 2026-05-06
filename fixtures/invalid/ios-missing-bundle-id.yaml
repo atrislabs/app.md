@@ -1,0 +1,8 @@
+schema_version: 1
+name: iOS Missing Bundle ID
+slug: ios-missing-bundle-id
+access: public
+runtime: ios
+vault: app_secrets
+endpoints:
+  deep_link_scheme: atris

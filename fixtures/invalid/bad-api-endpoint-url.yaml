@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad API Endpoint URL
+slug: bad-api-endpoint-url
+access: public
+runtime: external
+vault: local
+endpoints:
+  api: not-a-url

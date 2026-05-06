@@ -2,7 +2,17 @@
 
 **Endgame:** `app-md-spec` (seeded 2026-04-29)
 **Source of truth for tasks:** `~/arena/empire/atrisos-backend/atris/TODO.md` § Endgame § app-md-spec
-**Acceptance:** see TODO.md endgame block (5 criteria, 14 tasks).
+**Acceptance:** see TODO.md endgame block (5 criteria; current task list is rolling, with T14 outbound still open).
+
+## Current status — 2026-05-05
+
+Local v1 artifacts are current: `SPEC.md`, `schema/app.schema.json`, `schema/app.v1.schema.json`, `fixtures/`, `scripts/validate.py`, `scripts/run_fixtures.py`, `requirements.txt`, `README.md`, `LAUNCH.md`, and `CHANGELOG.md`.
+
+Latest verification: `scripts/run_fixtures.py` passes 11 valid fixtures, 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-level smoke checks, and the `examples/templates (11)` manifest gate. Final verifier line: `OK: all conformance checks pass`.
+
+T14 remains the only unmet acceptance gate: one owner-approved outbound notification. Private decision surface lives in `atris/launches/app-md/PICK_SHEET.md` in `atrisos-backend`; no send has fired.
+
+Historical note: older tick blocks below preserve what was true when written, including old 7-example, 65-line validator, and artifact-count claims. Do not use those old counts as current state.
 
 ## Tick 0 — 2026-04-29 (seed)
 

@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Slug Type
+slug:
+  - bad-slug-type
+access: private
+runtime: local
+vault: local

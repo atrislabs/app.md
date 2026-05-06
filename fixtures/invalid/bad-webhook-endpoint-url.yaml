@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Webhook Endpoint URL
+slug: bad-webhook-endpoint-url
+access: public
+runtime: webhook
+vault: local
+endpoints:
+  webhook: ftp://example.com/hook

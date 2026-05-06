@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Description Type
+slug: bad-description-type
+access: private
+runtime: local
+vault: local
+description:
+  - not-a-string

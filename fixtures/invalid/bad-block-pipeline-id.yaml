@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Block Pipeline ID
+slug: bad-block-pipeline-id
+access: private
+runtime: subprocess
+vault: atris-kms
+block_pipeline_id: not-a-uuid

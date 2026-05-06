@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Wiki Path Type
+slug: bad-wiki-path-type
+access: private
+runtime: local
+vault: local
+wiki_paths:
+  - 42

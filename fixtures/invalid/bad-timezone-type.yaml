@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Timezone Type
+slug: bad-timezone-type
+access: private
+runtime: local
+vault: local
+timezone: 42

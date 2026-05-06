@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Runtime Auth Enum
+slug: bad-runtime-auth-enum
+access: private
+runtime: local
+vault: local
+runtime_auth: oauth

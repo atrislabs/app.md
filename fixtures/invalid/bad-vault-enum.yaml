@@ -1,0 +1,6 @@
+schema_version: 1
+name: Bad Vault Enum
+slug: bad-vault-enum
+access: private
+runtime: local
+vault: gcp-secret-manager

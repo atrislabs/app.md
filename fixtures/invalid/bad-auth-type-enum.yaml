@@ -1,0 +1,10 @@
+schema_version: 1
+name: Bad Auth Type Enum
+slug: bad-auth-type-enum
+access: private
+runtime: web
+vault: app_secrets
+endpoints:
+  frontend: https://app.example.com
+auth:
+  type: signed_cookie

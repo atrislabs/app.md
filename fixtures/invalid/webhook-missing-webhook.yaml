@@ -1,0 +1,8 @@
+schema_version: 1
+name: Webhook Missing Webhook Endpoint
+slug: webhook-missing-webhook
+access: public
+runtime: webhook
+vault: app_secrets
+endpoints:
+  api: https://api.example.com

@@ -84,24 +84,34 @@ python3 -m scripts.apps_cli run      /path/to/my-standup   # execute (local / su
 
 The folder path can be absolute or relative — the CLI resolves it. The commands above use Atris as the reference runtime; APP.md itself is runtime-agnostic, see [SPEC.md](./SPEC.md).
 
-For a no-runtime, validate-only check, this repo ships a 65-line reference parser (`scripts/validate.py`) — copy it as the starting point for your own implementation:
+A run writes two surfaces:
+
+- `logs/YYYY/*.json` — immutable run records for debugging and audit.
+- `data/latest.md`, `data/status.json`, `data/app_events.jsonl` — the app-owned utility surface. If `artifact_dir:` is set, these files are written there instead of `data/`.
+
+When `member:`, `skills:`, or `wiki_paths:` are declared, the reference runner injects the matching local Atris `MEMBER.md`, `SKILL.md`, and wiki files into the app prompt when they exist, and reports missing refs explicitly when they do not.
+
+For a no-runtime, validate-only check, this repo ships a reference parser (`scripts/validate.py`) — copy it as the starting point for your own implementation. Requires Python 3.10+:
 
 ```bash
-pip install "PyYAML>=6,<7" "jsonschema>=4,<5"
-python3 scripts/validate.py examples/atris-revenue/APP.md   # → exit 0 + canonical JSON
+python3 -m pip install -r requirements.txt
+python3 scripts/validate.py examples/atris-revenue/APP.md   # → exit 0 + canonical JSON including spec_digest
 python3 scripts/validate.py path/to/broken.yaml             # → exit 2 + per-error lines
 cat APP.md | python3 scripts/validate.py -                  # stdin
 ```
 
-Run the full conformance suite (10 valid + 13 invalid fixtures) with `python3 scripts/run_fixtures.py`. The schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`).
+Markdown inputs (`APP.md`, `.md`, `.markdown`) must include `---` frontmatter. Raw YAML is accepted for `.yaml`/`.yml` manifests and stdin.
+
+Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, and 11 example/template manifests) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## Examples
 
-Seven real apps that ship in production, illustrating most of the schema surface:
+Eight real apps that ship in production or local operator workflows, illustrating most of the schema surface:
 
 | App | Runtime | Demonstrates |
 |---|---|---|
 | [`commit-digest`](./examples/commit-digest/APP.md) | `local` | Runs entirely on the customer's machine, no secrets, no network |
+| [`agent-handoff-auditor`](./examples/agent-handoff-auditor/APP.md) | `local` | Read-only repo and handoff preflight before an agent continues work |
 | [`atris-revenue`](./examples/atris-revenue/APP.md) | `ec2` | Stripe → Slack daily digest, secret declaration |
 | [`burn-rate`](./examples/burn-rate/APP.md) | `ec2` | Multi-vendor finance pull (Ramp + Mercury + Brex + Stripe) |
 | [`daily-standup`](./examples/daily-standup/APP.md) | `subprocess` | Cron schedule, multi-surface rendering (`[slack, voice, email]`) |
@@ -121,9 +131,9 @@ Start a new app from a built-in scaffold:
 
 ## Status
 
-Schema v1, in production use at [Atris Labs](https://atris.ai). The reference runtime parses 251 tests' worth of edge cases and dispatches to subprocess + web runtimes today; ec2 / ios / external are scaffolded.
+Schema v1, in production use at [Atris Labs](https://atris.ai). The public conformance suite covers the schema fixtures, direct schema constraint paths, and parser-smoke checks described above. The reference runtime dispatches to subprocess + web runtimes today; ec2 / ios / external are scaffolded.
 
-This repo is the spec + examples. The reference parser, dispatcher, and CLI live in [`atrislabs/atrisos-backend`](https://github.com/atrislabs/atrisos-backend) under `backend/services/app_folder_service.py` and `backend/scripts/apps_cli.py`.
+This repo is the spec, examples, conformance suite, and public validate-only parser. The reference runtime parses APP.md folders and dispatches them in [`atrislabs/atrisos-backend`](https://github.com/atrislabs/atrisos-backend) under `backend/services/app_folder_service.py` and `backend/scripts/apps_cli.py`.
 
 ## License
 

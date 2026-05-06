@@ -1,0 +1,9 @@
+schema_version: 1
+name: Bad Stripe Connect Account Type
+slug: bad-stripe-connect-account-type
+access: private
+runtime: local
+vault: local
+monetization:
+  stripe_connect_account:
+    - acct_123

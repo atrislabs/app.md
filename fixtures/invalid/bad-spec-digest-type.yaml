@@ -1,0 +1,8 @@
+schema_version: 1
+name: Bad Spec Digest Type
+slug: bad-spec-digest-type
+access: private
+runtime: local
+vault: local
+spec_digest:
+  - 0000000000000000000000000000000000000000000000000000000000000000

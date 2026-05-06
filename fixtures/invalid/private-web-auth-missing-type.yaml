@@ -1,0 +1,9 @@
+schema_version: 1
+name: Private Web Auth Missing Type
+slug: private-web-auth-missing-type
+access: private
+runtime: web
+vault: app_secrets
+endpoints:
+  frontend: https://app.example.com
+auth: {}

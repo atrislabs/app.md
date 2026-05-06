@@ -1,0 +1,10 @@
+schema_version: 1
+name: Bad Auth Issuer Type
+slug: bad-auth-issuer-type
+access: private
+runtime: local
+vault: local
+auth:
+  type: oauth
+  issuer:
+    - https://issuer.example.com

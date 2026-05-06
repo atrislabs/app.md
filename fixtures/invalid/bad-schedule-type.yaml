@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Schedule Type
+slug: bad-schedule-type
+access: private
+runtime: local
+vault: local
+schedule: 42

@@ -1,0 +1,7 @@
+schema_version: 1
+name: Bad Wiki Paths Type
+slug: bad-wiki-paths-type
+access: private
+runtime: local
+vault: local
+wiki_paths: wiki/customers/acme
