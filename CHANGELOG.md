@@ -12,7 +12,7 @@ as current.
 - Shipped the public validator in `scripts/validate.py`.
 - Shipped the conformance runner in `scripts/run_fixtures.py`.
 - Pinned 11 valid fixtures, 85 invalid fixtures, 43 direct schema constraint
-  paths, 11 parser-smoke checks, and 12 example/template manifests.
+  paths, 11 parser-smoke checks, and 13 example/template manifests.
 - Added `RECEIPTS.md` to define the proof loop for app runs: status, owner,
   verifier, decision, and learned fields; `scripts/run_fixtures.py` now
   validates public receipt examples for those portable fields, including a

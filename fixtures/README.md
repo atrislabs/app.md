@@ -10,7 +10,7 @@ fixtures/
                      the keyword + expected_paths each case asserts
 ```
 
-`scripts/run_fixtures.py` also runs a small parser-level smoke section against `scripts/validate.py` for checks JSON Schema cannot express: missing/unclosed APP.md frontmatter, duplicate keys, anchors/aliases/tags, non-JSON scalars, NaN/Infinity, invalid IANA timezone, and `spec_digest` worked-example/self-exclusion behavior. It also validates all 12 example/template manifests through the same reference-parser path and checks 2 public receipt examples for the portable proof-loop fields and basic example quality.
+`scripts/run_fixtures.py` also runs a small parser-level smoke section against `scripts/validate.py` for checks JSON Schema cannot express: missing/unclosed APP.md frontmatter, duplicate keys, anchors/aliases/tags, non-JSON scalars, NaN/Infinity, invalid IANA timezone, and `spec_digest` worked-example/self-exclusion behavior. It also validates all 13 example/template manifests through the same reference-parser path and checks 2 public receipt examples for the portable proof-loop fields and basic example quality.
 
 `fixtures/valid/unknown-top-level.yaml` proves the Rule 4c schema-shape boundary: v1 validators tolerate unknown top-level fields. It does not prove byte-for-byte YAML re-emission.
 

@@ -39,6 +39,8 @@ Customers can use APP.md to package a repeatable capability and move it between 
 
 For a concrete app-composition example, see [`examples/app-composition-coordinator/APP.md`](./examples/app-composition-coordinator/APP.md), which calls other APP.md apps and collects their receipts before recommending the next action.
 
+For a concrete Review Inbox / Learning Loop example, see [`examples/learning-loop-reviewer/APP.md`](./examples/learning-loop-reviewer/APP.md), which reviews receipts, assigns owners, and turns failures into verified improvement tasks.
+
 For the proof loop behind app runs, see [RECEIPTS.md](./RECEIPTS.md): status, owner, verifier, decision, and learned fields for self-correcting agency.
 
 The public verifier also checks receipt packet examples, including [`examples/app-composition-coordinator/receipts/sample-receipt.json`](./examples/app-composition-coordinator/receipts/sample-receipt.json) and the failure-to-learning receipt in [`examples/app-composition-coordinator/receipts/sample-failure-receipt.json`](./examples/app-composition-coordinator/receipts/sample-failure-receipt.json).
@@ -118,11 +120,11 @@ cat APP.md | python3 scripts/validate.py -                  # stdin
 
 Markdown inputs (`APP.md`, `.md`, `.markdown`) must include `---` frontmatter. Raw YAML is accepted for `.yaml`/`.yml` manifests and stdin.
 
-Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, 12 example/template manifests, and 2 public receipt examples) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Receipt conventions live in [`RECEIPTS.md`](./RECEIPTS.md). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
+Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, 13 example/template manifests, and 2 public receipt examples) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Receipt conventions live in [`RECEIPTS.md`](./RECEIPTS.md). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## Examples
 
-Eight real apps that ship in production or local operator workflows, illustrating most of the schema surface:
+Nine real apps that ship in production or local operator workflows, illustrating most of the schema surface:
 
 | App | Runtime | Demonstrates |
 |---|---|---|
@@ -132,6 +134,7 @@ Eight real apps that ship in production or local operator workflows, illustratin
 | [`burn-rate`](./examples/burn-rate/APP.md) | `ec2` | Multi-vendor finance pull (Ramp + Mercury + Brex + Stripe) |
 | [`daily-standup`](./examples/daily-standup/APP.md) | `subprocess` | Cron schedule, multi-surface rendering (`[slack, voice, email]`) |
 | [`customer-pulse`](./examples/customer-pulse/APP.md) | `subprocess` | `wiki_paths` for per-customer context injection |
+| [`learning-loop-reviewer`](./examples/learning-loop-reviewer/APP.md) | `subprocess` | Review Inbox / Learning Loop that converts receipts into verified tasks |
 | [`atris-pitch-deck`](./examples/atris-pitch-deck/APP.md) | `web` | `render: fullscreen`, `ui_spec`, `artifact_dir` for shared writes |
 | [`atris`](./examples/atris/APP.md) | `external` | The framework treated as an instance of its own spec |
 

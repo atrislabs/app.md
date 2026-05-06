@@ -16,7 +16,7 @@ The proof loop is documented too: [RECEIPTS.md](./RECEIPTS.md) names the status,
 
 > *"v1 was designed so a `schema_version: 1` parser keeps working when the spec adds new optional fields. Forward-compat (Rule 4c), closed-block discipline for security-relevant sub-schemas, and explicit `schema_version` semantics mean adopters can ship and extend without waiting on the spec maintainers."* — Atris team
 
-**Available now.** Clone [`github.com/atrislabs/app.md`](https://github.com/atrislabs/app.md), use Python 3.10+, run `python3 -m pip install -r requirements.txt`, then run `python3 scripts/validate.py examples/atris-revenue/APP.md` to get exit 0 + canonical JSON. Run `python3 scripts/run_fixtures.py` to verify fixture hashes, schema path coverage, invalid-case paths/keywords, parser-smoke behavior, 12 example/template manifests, and public receipt examples. The repo is [MIT-licensed](./LICENSE).
+**Available now.** Clone [`github.com/atrislabs/app.md`](https://github.com/atrislabs/app.md), use Python 3.10+, run `python3 -m pip install -r requirements.txt`, then run `python3 scripts/validate.py examples/atris-revenue/APP.md` to get exit 0 + canonical JSON. Run `python3 scripts/run_fixtures.py` to verify fixture hashes, schema path coverage, invalid-case paths/keywords, parser-smoke behavior, 13 example/template manifests, and public receipt examples. The repo is [MIT-licensed](./LICENSE).
 
 ---
 

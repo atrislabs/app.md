@@ -34,7 +34,7 @@ An APP.md app can be a workflow, tool, agent skill, UI, webhook wrapper, schedul
 
 The important rule is that it has a boundary. Something can call it, render it, schedule it, inspect it, and verify what happened.
 
-That means one app can also connect to another app. A customer support app can call a refund-policy app. A daily briefing app can call a calendar app and a commit-summary app. A review app can call a verifier app, then write the receipt another agent uses next time. The [`app-composition-coordinator`](./examples/app-composition-coordinator/APP.md) example shows this pattern as an APP.md manifest.
+That means one app can also connect to another app. A customer support app can call a refund-policy app. A daily briefing app can call a calendar app and a commit-summary app. A review app can call a verifier app, then write the receipt another agent uses next time. The [`app-composition-coordinator`](./examples/app-composition-coordinator/APP.md) example shows app-to-app composition, and [`learning-loop-reviewer`](./examples/learning-loop-reviewer/APP.md) shows the Review Inbox / Learning Loop pattern as an APP.md manifest.
 
 ## Who Does What
 
@@ -58,7 +58,7 @@ An app should not only do work. It should make work easier to improve.
 
 The loop is: observe -> understand -> decide -> act -> verify -> receive feedback -> learn -> improve the loop -> repeat.
 
-In APP.md terms, that means the manifest declares the capability, the runtime executes it, the app writes outputs and receipts, a human or agent reviews the result, and the next version becomes easier to trust. [`RECEIPTS.md`](./RECEIPTS.md) defines the receipt packet that makes this self-correcting loop auditable.
+In APP.md terms, that means the manifest declares the capability, the runtime executes it, the app writes outputs and receipts, a human or agent reviews the result, and the next version becomes easier to trust. [`RECEIPTS.md`](./RECEIPTS.md) defines the receipt packet that makes this self-correcting loop auditable; [`learning-loop-reviewer`](./examples/learning-loop-reviewer/APP.md) shows how receipts become owner-routed improvement tasks.
 
 ## Principles
 
