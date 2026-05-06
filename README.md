@@ -93,10 +93,12 @@ python3 -m venv .venv && source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 
 python3 -m scripts.apps_cli validate /path/to/my-standup   # parse + lint
-python3 -m scripts.apps_cli run      /path/to/my-standup   # execute (local / subprocess)
+python3 -m scripts.apps_cli run      /path/to/my-standup   # dispatch supported runtimes
 ```
 
 The folder path can be absolute or relative — the CLI resolves it. The commands above use Atris as the reference runtime; APP.md itself is runtime-agnostic, see [SPEC.md](./SPEC.md).
+
+The reference CLI dispatches local/subprocess apps through an LLM-callable process, webhook/external apps through signed HTTP POSTs, ec2 apps through a warm-pool runner when identity and runner wiring are supplied, and web and ios apps by returning the URL or deep link the caller should render. Template manifests validate and scaffold, but do not run until installed as a concrete runtime.
 
 A run writes two surfaces:
 
@@ -145,7 +147,7 @@ Start a new app from a built-in scaffold:
 
 ## Status
 
-Schema v1, in production use at [Atris Labs](https://atris.ai). The public conformance suite covers the schema fixtures, direct schema constraint paths, and parser-smoke checks described above. The reference runtime dispatches to subprocess + web runtimes today; ec2 / ios / external are scaffolded.
+Schema v1, in production use at [Atris Labs](https://atris.ai). The public conformance suite covers the schema fixtures, direct schema constraint paths, parser-smoke checks, public example/template manifests, and receipt examples described above. The reference runtime has dispatch paths for local/subprocess, webhook/external, ec2, web, and ios apps; template is intentionally validate/install-only until forked into a runnable app.
 
 This repo is the spec, examples, conformance suite, and public validate-only parser. The reference runtime parses APP.md folders and dispatches them in [`atrislabs/atrisos-backend`](https://github.com/atrislabs/atrisos-backend) under `backend/services/app_folder_service.py` and `backend/scripts/apps_cli.py`.
 

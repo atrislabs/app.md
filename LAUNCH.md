@@ -39,7 +39,7 @@ The v1 design target is one work-day for a runtime engineer (the spec, schema, a
 3. Wire your runtime's existing app registration step to call the parser; on `valid`, persist the manifest; on `invalid`, surface the structured error path to your authoring UX.
 4. Run [`scripts/run_fixtures.py`](./scripts/run_fixtures.py) against your installed copy of the schema. Exit 0 = the schema fixtures, 43 direct schema constraint paths, parser-smoke checks, and public example/template manifests all pass. Exit non-zero tells you exactly which case fails.
 
-The sample reference runtime in [`atrislabs/atrisos-backend`](https://github.com/atrislabs/atrisos-backend) executes `local`, `subprocess`, `ec2`, and `web` apps today; `webhook`, `external`, and `ios` are scaffolded.
+The sample reference runtime in [`atrislabs/atrisos-backend`](https://github.com/atrislabs/atrisos-backend) dispatches local/subprocess apps through an LLM-callable process, webhook/external apps through signed HTTP POSTs, ec2 apps through a warm-pool runner when identity and runner wiring are supplied, and web and ios apps by returning the URL or deep link to render. Template manifests validate and scaffold, but do not run until installed as a concrete runtime.
 
 ### How does v1 evolve without breaking adopters?
 
