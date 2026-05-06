@@ -44,7 +44,7 @@ The portable shape is:
 | `decision` | What should happen next |
 | `learned` | What future runs should do differently |
 
-See [`examples/app-composition-coordinator/receipts/sample-receipt.json`](./examples/app-composition-coordinator/receipts/sample-receipt.json) for a receipt packet example. `scripts/run_fixtures.py` validates public receipt examples for these portable fields.
+See [`examples/app-composition-coordinator/receipts/sample-receipt.json`](./examples/app-composition-coordinator/receipts/sample-receipt.json) for an approval-gated receipt packet example, and [`examples/app-composition-coordinator/receipts/sample-failure-receipt.json`](./examples/app-composition-coordinator/receipts/sample-failure-receipt.json) for a failure-to-learning example. `scripts/run_fixtures.py` validates public receipt examples for these portable fields and basic example quality.
 
 ## Status Semantics
 
@@ -85,6 +85,8 @@ For example:
 - Future runs check privacy/access before charging credits.
 
 The app did not merely fail. It improved the loop.
+
+The public failure receipt example makes that concrete: a transcript-dependent run fails on access, records an owner, names the verifier to add, and stores the lesson future runs should apply.
 
 ## Relationship to APP.md v1
 

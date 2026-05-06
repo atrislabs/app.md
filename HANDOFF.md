@@ -8,7 +8,7 @@
 
 Local v1 artifacts are current: `SPEC.md`, `schema/app.schema.json`, `schema/app.v1.schema.json`, `fixtures/`, `scripts/validate.py`, `scripts/run_fixtures.py`, `requirements.txt`, `README.md`, `LAUNCH.md`, `VISION.md`, `RECEIPTS.md`, and `CHANGELOG.md`.
 
-Latest verification: `scripts/run_fixtures.py` passes 11 valid fixtures, 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-level smoke checks, the `examples/templates (12)` manifest gate, and the `receipt examples (1)` gate. Final verifier line: `OK: all conformance checks pass`.
+Latest verification: `scripts/run_fixtures.py` passes 11 valid fixtures, 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-level smoke checks, the `examples/templates (12)` manifest gate, and the `receipt examples (2)` gate. Final verifier line: `OK: all conformance checks pass`.
 
 T14 remains the only unmet acceptance gate: one owner-approved outbound notification. Private decision surface lives in `atris/launches/app-md/PICK_SHEET.md` in `atrisos-backend`; no send has fired.
 

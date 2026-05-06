@@ -1,0 +1,32 @@
+{
+  "app_slug": "app-composition-coordinator",
+  "run_id": "run_2026_05_06_0002",
+  "status": "failed",
+  "started_at": "2026-05-06T04:20:00Z",
+  "completed_at": "2026-05-06T04:20:42Z",
+  "inputs_summary": "Coordinate a support answer that depends on a private video transcript; do not charge credits unless the transcript is usable.",
+  "outputs": [
+    {
+      "kind": "failure_report",
+      "path": "artifacts/private-video-transcript-failure.md"
+    }
+  ],
+  "events": [
+    {
+      "type": "app_called",
+      "app_slug": "youtube-transcript",
+      "reason": "Extract transcript evidence before drafting the support answer",
+      "receipt_path": "receipts/youtube-transcript-run_2026_05_06_0002.json"
+    },
+    {
+      "type": "composition_completed",
+      "app_count": 1,
+      "recommendation": "Stop and add a privacy/access preflight before retrying transcript extraction.",
+      "needs_human_approval": false
+    }
+  ],
+  "owner": "youtube-skill",
+  "verifier": "transcript-access-preflight",
+  "decision": "Patch the YouTube transcript app with a private-video fallback and add a verifier before future charged runs.",
+  "learned": "Video-dependent apps should verify access and transcript availability before spending credits or drafting downstream work."
+}

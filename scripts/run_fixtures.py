@@ -13,6 +13,7 @@ Reads fixtures/conformance.json (the corpus contract) and:
   - validates the index contract before trusting fixture metadata
   - validates public example/template manifests with the reference parser
   - validates public receipt packet examples for the portable proof-loop fields
+    and basic example quality
 
 Exits 0 only on a clean run.
 
@@ -335,6 +336,7 @@ RECEIPT_REQUIRED_FIELDS = {
     "learned",
 }
 RECEIPT_STATUSES = {"ok", "failed", "blocked", "needs_approval"}
+RECEIPT_STRING_FIELDS = RECEIPT_REQUIRED_FIELDS - {"outputs", "events"}
 
 
 def receipt_example_paths() -> list[Path]:
@@ -380,13 +382,34 @@ def validate_receipt_examples(failures: list[str]) -> None:
             print(f"  FAIL {rel}: invalid status {status!r}")
             continue
 
-        if not isinstance(receipt.get("events"), list):
+        bad_strings = [
+            field
+            for field in sorted(RECEIPT_STRING_FIELDS)
+            if not isinstance(receipt.get(field), str) or not receipt.get(field).strip()
+        ]
+        if bad_strings:
+            failures.append(f"{rel} receipt fields must be non-empty strings: {', '.join(bad_strings)}")
+            print(f"  FAIL {rel}: empty string fields {', '.join(bad_strings)}")
+            continue
+
+        events = receipt.get("events")
+        if not isinstance(events, list):
             failures.append(f"{rel} events must be a list")
             print(f"  FAIL {rel}: events not list")
             continue
-        if not isinstance(receipt.get("outputs"), list):
+        if any(not isinstance(event, dict) for event in events):
+            failures.append(f"{rel} events must contain only objects")
+            print(f"  FAIL {rel}: event not object")
+            continue
+
+        outputs = receipt.get("outputs")
+        if not isinstance(outputs, list):
             failures.append(f"{rel} outputs must be a list")
             print(f"  FAIL {rel}: outputs not list")
+            continue
+        if any(not isinstance(output, dict) for output in outputs):
+            failures.append(f"{rel} outputs must contain only objects")
+            print(f"  FAIL {rel}: output not object")
             continue
 
         print(f"  pass {rel}")
