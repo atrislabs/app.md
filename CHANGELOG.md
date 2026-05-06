@@ -13,6 +13,8 @@ as current.
 - Shipped the conformance runner in `scripts/run_fixtures.py`.
 - Pinned 11 valid fixtures, 85 invalid fixtures, 43 direct schema constraint
   paths, 11 parser-smoke checks, and 12 example/template manifests.
+- Added `RECEIPTS.md` to define the proof loop for app runs: status, owner,
+  verifier, decision, and learned fields.
 - Defined v1 schema evolution: optional top-level fields may remain compatible
   under Rule 4c; renamed required fields, removed enum values, new enum values,
   semantic shifts, or additions inside closed sub-schemas require the next

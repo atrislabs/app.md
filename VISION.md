@@ -58,7 +58,7 @@ An app should not only do work. It should make work easier to improve.
 
 The loop is: observe -> understand -> decide -> act -> verify -> receive feedback -> learn -> improve the loop -> repeat.
 
-In APP.md terms, that means the manifest declares the capability, the runtime executes it, the app writes outputs and receipts, a human or agent reviews the result, and the next version becomes easier to trust.
+In APP.md terms, that means the manifest declares the capability, the runtime executes it, the app writes outputs and receipts, a human or agent reviews the result, and the next version becomes easier to trust. [`RECEIPTS.md`](./RECEIPTS.md) defines the receipt packet that makes this self-correcting loop auditable.
 
 ## Principles
 

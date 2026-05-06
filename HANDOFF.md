@@ -6,7 +6,7 @@
 
 ## Current status — 2026-05-05
 
-Local v1 artifacts are current: `SPEC.md`, `schema/app.schema.json`, `schema/app.v1.schema.json`, `fixtures/`, `scripts/validate.py`, `scripts/run_fixtures.py`, `requirements.txt`, `README.md`, `LAUNCH.md`, `VISION.md`, and `CHANGELOG.md`.
+Local v1 artifacts are current: `SPEC.md`, `schema/app.schema.json`, `schema/app.v1.schema.json`, `fixtures/`, `scripts/validate.py`, `scripts/run_fixtures.py`, `requirements.txt`, `README.md`, `LAUNCH.md`, `VISION.md`, `RECEIPTS.md`, and `CHANGELOG.md`.
 
 Latest verification: `scripts/run_fixtures.py` passes 11 valid fixtures, 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-level smoke checks, and the `examples/templates (12)` manifest gate. Final verifier line: `OK: all conformance checks pass`.
 

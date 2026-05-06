@@ -39,6 +39,8 @@ Customers can use APP.md to package a repeatable capability and move it between 
 
 For a concrete app-composition example, see [`examples/app-composition-coordinator/APP.md`](./examples/app-composition-coordinator/APP.md), which calls other APP.md apps and collects their receipts before recommending the next action.
 
+For the proof loop behind app runs, see [RECEIPTS.md](./RECEIPTS.md): status, owner, verifier, decision, and learned fields for self-correcting agency.
+
 ## Anatomy
 
 An app is a folder:
@@ -112,7 +114,7 @@ cat APP.md | python3 scripts/validate.py -                  # stdin
 
 Markdown inputs (`APP.md`, `.md`, `.markdown`) must include `---` frontmatter. Raw YAML is accepted for `.yaml`/`.yml` manifests and stdin.
 
-Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, and 12 example/template manifests) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
+Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, and 12 example/template manifests) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Receipt conventions live in [`RECEIPTS.md`](./RECEIPTS.md). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## Examples
 

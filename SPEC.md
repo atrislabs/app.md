@@ -20,6 +20,7 @@ This spec describes the manifest contract, not every runtime behavior.
 - Users and agents can run the app, inspect the manifest, call it through the surface a runtime exposes, review its outputs, and approve sensitive actions.
 - Runtime builders decide how the app executes, renders, authenticates, bills, observes, and composes with other apps.
 - App-to-app composition is represented in v1 through runtime surfaces such as `endpoints.*`, `capabilities`, `surfaces`, MCP, webhooks, and the markdown body. Future versions may standardize richer dependency and receipt fields.
+- Receipt conventions live in [`RECEIPTS.md`](./RECEIPTS.md): status, owner, verifier, decision, and learned fields are runtime conventions in v1, not required schema fields.
 
 ## Required fields
 

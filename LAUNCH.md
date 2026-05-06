@@ -12,6 +12,8 @@ The v1 release ships five current artifacts together: the [normative spec](./SPE
 
 The long-term vision is bigger than v1: APP.md is the portable app contract below AI runtimes, marketplaces, schedulers, and sandboxes. See [VISION.md](./VISION.md).
 
+The proof loop is documented too: [RECEIPTS.md](./RECEIPTS.md) names the status, owner, verifier, decision, and learned fields that let app runs become auditable improvement.
+
 > *"v1 was designed so a `schema_version: 1` parser keeps working when the spec adds new optional fields. Forward-compat (Rule 4c), closed-block discipline for security-relevant sub-schemas, and explicit `schema_version` semantics mean adopters can ship and extend without waiting on the spec maintainers."* — Atris team
 
 **Available now.** Clone [`github.com/atrislabs/app.md`](https://github.com/atrislabs/app.md), use Python 3.10+, run `python3 -m pip install -r requirements.txt`, then run `python3 scripts/validate.py examples/atris-revenue/APP.md` to get exit 0 + canonical JSON. Run `python3 scripts/run_fixtures.py` to verify fixture hashes, schema path coverage, invalid-case paths/keywords, parser-smoke behavior, and 12 example/template manifests. The repo is [MIT-licensed](./LICENSE).
