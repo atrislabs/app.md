@@ -12,6 +12,7 @@ Reads fixtures/conformance.json (the corpus contract) and:
     fixture expected_path witness
   - validates the index contract before trusting fixture metadata
   - validates public example/template manifests with the reference parser
+  - validates public receipt packet examples for the portable proof-loop fields
 
 Exits 0 only on a clean run.
 
@@ -319,6 +320,78 @@ def validate_public_manifests(schema_validator: Draft202012Validator, failures: 
         print(f"  pass {rel}")
 
 
+RECEIPT_REQUIRED_FIELDS = {
+    "app_slug",
+    "run_id",
+    "status",
+    "started_at",
+    "completed_at",
+    "inputs_summary",
+    "outputs",
+    "events",
+    "owner",
+    "verifier",
+    "decision",
+    "learned",
+}
+RECEIPT_STATUSES = {"ok", "failed", "blocked", "needs_approval"}
+
+
+def receipt_example_paths() -> list[Path]:
+    roots = [ROOT / "examples", ROOT / "templates"]
+    paths: list[Path] = []
+    for base in roots:
+        if base.exists():
+            paths.extend(base.rglob("receipts/*.json"))
+    return sorted(paths)
+
+
+def validate_receipt_examples(failures: list[str]) -> None:
+    paths = receipt_example_paths()
+    print(f"\n== receipt examples ({len(paths)}) ==")
+    if not paths:
+        failures.append("no public receipt packet examples found")
+        print("  FAIL no public receipt packet examples found")
+        return
+
+    for p in paths:
+        rel = p.relative_to(ROOT)
+        try:
+            receipt = json.loads(p.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            failures.append(f"{rel} is invalid JSON at line {exc.lineno}, column {exc.colno}")
+            print(f"  FAIL {rel}: invalid JSON")
+            continue
+
+        if not isinstance(receipt, dict):
+            failures.append(f"{rel} must be a JSON object")
+            print(f"  FAIL {rel}: not an object")
+            continue
+
+        missing = sorted(RECEIPT_REQUIRED_FIELDS - receipt.keys())
+        if missing:
+            failures.append(f"{rel} missing receipt fields: {', '.join(missing)}")
+            print(f"  FAIL {rel}: missing {', '.join(missing)}")
+            continue
+
+        status = receipt.get("status")
+        if status not in RECEIPT_STATUSES:
+            failures.append(f"{rel} status must be one of {sorted(RECEIPT_STATUSES)}")
+            print(f"  FAIL {rel}: invalid status {status!r}")
+            continue
+
+        if not isinstance(receipt.get("events"), list):
+            failures.append(f"{rel} events must be a list")
+            print(f"  FAIL {rel}: events not list")
+            continue
+        if not isinstance(receipt.get("outputs"), list):
+            failures.append(f"{rel} outputs must be a list")
+            print(f"  FAIL {rel}: outputs not list")
+            continue
+
+        print(f"  pass {rel}")
+
+
 def main() -> int:
     if not INDEX.exists():
         print(f"FAIL: missing index {INDEX.relative_to(ROOT)}")
@@ -438,6 +511,7 @@ def main() -> int:
     validate_schema_path_coverage(index, schema, failures)
     validate_parser_smoke(failures)
     validate_public_manifests(validator, failures)
+    validate_receipt_examples(failures)
 
     print(f"\n{len(failures)} failures")
     if failures:

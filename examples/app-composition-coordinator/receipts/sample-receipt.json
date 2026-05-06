@@ -1,0 +1,36 @@
+{
+  "app_slug": "app-composition-coordinator",
+  "run_id": "run_2026_05_06_0001",
+  "status": "needs_approval",
+  "started_at": "2026-05-06T04:00:00Z",
+  "completed_at": "2026-05-06T04:01:30Z",
+  "inputs_summary": "Customer refund complaint for account acme-co; do not contact the customer without approval.",
+  "outputs": [
+    {
+      "kind": "slack_summary",
+      "path": "slack://channels/customer-support/1746504090.000100"
+    },
+    {
+      "kind": "decision_packet",
+      "path": "artifacts/acme-co-refund-decision.md"
+    }
+  ],
+  "events": [
+    {
+      "type": "app_called",
+      "app_slug": "customer-pulse",
+      "reason": "Summarize recent account signals",
+      "receipt_path": "receipts/customer-pulse-run_2026_05_06_0001.json"
+    },
+    {
+      "type": "app_called",
+      "app_slug": "agent-handoff-auditor",
+      "reason": "Check workspace state and approval gates",
+      "receipt_path": "receipts/agent-handoff-auditor-run_2026_05_06_0001.json"
+    }
+  ],
+  "owner": "support-lead",
+  "verifier": "human-review-inbox",
+  "decision": "Approve or reject the refund response draft before any outbound send.",
+  "learned": "Refund complaints need policy and billing verifier apps before the coordinator can recommend an action without manual review."
+}

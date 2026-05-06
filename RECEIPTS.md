@@ -44,6 +44,8 @@ The portable shape is:
 | `decision` | What should happen next |
 | `learned` | What future runs should do differently |
 
+See [`examples/app-composition-coordinator/receipts/sample-receipt.json`](./examples/app-composition-coordinator/receipts/sample-receipt.json) for a receipt packet example. `scripts/run_fixtures.py` validates public receipt examples for these portable fields.
+
 ## Status Semantics
 
 - `ok`: the app completed and the verifier accepted the result.

@@ -41,6 +41,8 @@ For a concrete app-composition example, see [`examples/app-composition-coordinat
 
 For the proof loop behind app runs, see [RECEIPTS.md](./RECEIPTS.md): status, owner, verifier, decision, and learned fields for self-correcting agency.
 
+The public verifier also checks receipt packet examples, starting with [`examples/app-composition-coordinator/receipts/sample-receipt.json`](./examples/app-composition-coordinator/receipts/sample-receipt.json).
+
 ## Anatomy
 
 An app is a folder:
@@ -114,7 +116,7 @@ cat APP.md | python3 scripts/validate.py -                  # stdin
 
 Markdown inputs (`APP.md`, `.md`, `.markdown`) must include `---` frontmatter. Raw YAML is accepted for `.yaml`/`.yml` manifests and stdin.
 
-Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, and 12 example/template manifests) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Receipt conventions live in [`RECEIPTS.md`](./RECEIPTS.md). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
+Run the full conformance suite (11 valid + 85 invalid fixtures, 43 direct schema constraint paths, 11 parser-smoke checks, 12 example/template manifests, and public receipt examples) with `python3 scripts/run_fixtures.py`. The stable schema alias is [`schema/app.schema.json`](./schema/app.schema.json); the versioned v1 schema lives at [`schema/app.v1.schema.json`](./schema/app.v1.schema.json) (`$id: https://atris.ai/schema/app.v1.schema.json`). Receipt conventions live in [`RECEIPTS.md`](./RECEIPTS.md). Release history and migration notes live in [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## Examples
 

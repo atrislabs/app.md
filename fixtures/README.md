@@ -10,7 +10,7 @@ fixtures/
                      the keyword + expected_paths each case asserts
 ```
 
-`scripts/run_fixtures.py` also runs a small parser-level smoke section against `scripts/validate.py` for checks JSON Schema cannot express: missing/unclosed APP.md frontmatter, duplicate keys, anchors/aliases/tags, non-JSON scalars, NaN/Infinity, invalid IANA timezone, and `spec_digest` worked-example/self-exclusion behavior. It also validates all 12 example/template manifests through the same reference-parser path.
+`scripts/run_fixtures.py` also runs a small parser-level smoke section against `scripts/validate.py` for checks JSON Schema cannot express: missing/unclosed APP.md frontmatter, duplicate keys, anchors/aliases/tags, non-JSON scalars, NaN/Infinity, invalid IANA timezone, and `spec_digest` worked-example/self-exclusion behavior. It also validates all 12 example/template manifests through the same reference-parser path and checks public receipt examples for the portable proof-loop fields.
 
 `fixtures/valid/unknown-top-level.yaml` proves the Rule 4c schema-shape boundary: v1 validators tolerate unknown top-level fields. It does not prove byte-for-byte YAML re-emission.
 
@@ -23,7 +23,7 @@ python3 -m pip install -r requirements.txt
 python3 scripts/run_fixtures.py
 ```
 
-Exit `0` = full conformance for the schema-shape corpus, bundled parser-level smoke, and public examples/templates. The final line is `OK: all conformance checks pass`. Any other exit code is a failure with a per-fixture, parser-smoke, or example/template reason.
+Exit `0` = full conformance for the schema-shape corpus, bundled parser-level smoke, public examples/templates, and receipt examples. The final line is `OK: all conformance checks pass`. Any other exit code is a failure with a per-fixture, parser-smoke, example/template, or receipt-example reason.
 
 ## conformance.json contract
 
