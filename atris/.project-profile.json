@@ -1,0 +1,8 @@
+{
+  "type": "python",
+  "framework": "python",
+  "hasCode": true,
+  "testCommand": "pytest",
+  "fileStructure": [],
+  "conventions": {}
+}

@@ -1,5 +1,7 @@
 # APP.md
 
+[![GitHub stars](https://img.shields.io/github/stars/atrislabs/app.md?style=social)](https://github.com/atrislabs/app.md/stargazers)
+
 A markdown-with-frontmatter manifest format for **agent-runnable apps** and portable capability surfaces.
 
 Inspired by [agentskills.io](https://agentskills.io)'s `SKILL.md`. Where `SKILL.md` answers *"how does an agent do X"*, `APP.md` answers *"what does the customer get"* — a self-contained, schedulable, vault-aware app that any agent runtime can pick up and execute.
