@@ -161,3 +161,14 @@ This repo is the spec, examples, conformance suite, and public validate-only par
 ## License
 
 MIT — see [LICENSE](./LICENSE). Fork the spec, adapt it for your runtime, ship apps.
+
+## Atris ecosystem
+
+| Repo | What |
+|------|------|
+| [atris](https://github.com/atrislabs/atris) | Workspace OS |
+| [member](https://github.com/atrislabs/member) | Team member spec |
+| [atris-tasks](https://github.com/atrislabs/atris-tasks) | Task contract |
+| [swarlo](https://github.com/atrislabs/swarlo) | Multi-agent board |
+
+Agents: [`FOR_AGENTS.md`](FOR_AGENTS.md)
